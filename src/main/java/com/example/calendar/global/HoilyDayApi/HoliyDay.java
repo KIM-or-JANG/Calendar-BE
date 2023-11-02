@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application-key.properties")
 public class HoliyDay {
 
     @Value("${api.secret.key}")
