@@ -5,15 +5,24 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-public class UserDate {
+public class Schedule {  //사용자 일정 entity
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     @Column
-    private String dataTitle;
+    private String dataTitle;   //일정 제목
 
     @Column
-    private date
+    private String date;    //날짜
+
+    @ManyToOne
+    @JoinColumn(name = "room_Id")
+    private Room room;
+
+   @ManyToOne
+   @JoinColumn(name = "user_Id")
+   private User user;
+
 }

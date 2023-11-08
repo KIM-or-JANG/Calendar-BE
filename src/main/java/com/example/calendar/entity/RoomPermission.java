@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-public class RoomRequest {
+public class RoomPermission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,11 @@ public class RoomRequest {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_Id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "roomId")
+    @JoinColumn(name = "room_Id")
     private Room room;
 
 }

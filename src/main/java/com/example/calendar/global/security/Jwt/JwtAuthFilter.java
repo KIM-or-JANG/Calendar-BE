@@ -1,4 +1,4 @@
-package com.example.calendar.security.Jwt;
+package com.example.calendar.global.security.Jwt;
 
 import com.example.calendar.dto.SecurityExceptionDto;
 import com.fasterxml.jackson.databind.ObjectMapper;

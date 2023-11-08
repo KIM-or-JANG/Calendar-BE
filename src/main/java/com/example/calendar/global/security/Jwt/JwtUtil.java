@@ -1,7 +1,7 @@
-package com.example.calendar.security.Jwt;
+package com.example.calendar.global.security.Jwt;
 
 import com.example.calendar.entity.UserRoleEnum;
-import com.example.calendar.security.UserDetails.UserDetailsServiceImpl;
+import com.example.calendar.global.security.UserDetails.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
