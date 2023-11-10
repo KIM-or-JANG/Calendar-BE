@@ -1,4 +1,4 @@
-package com.example.calendar;
+package com.example.calendar.repository;
 
 import com.example.calendar.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findByroom_Id();
+    List<Schedule> findByroom_Id(Long id);
 }

@@ -1,4 +1,4 @@
-package com.example.calendar.security.UserDetails;
+package com.example.calendar.global.security.UserDetails;
 
 import com.example.calendar.entity.User;
 import org.springframework.security.core.GrantedAuthority;

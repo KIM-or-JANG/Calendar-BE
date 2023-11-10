@@ -1,4 +1,4 @@
-package com.example.calendar.security.Config;
+package com.example.calendar.global.security.Config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

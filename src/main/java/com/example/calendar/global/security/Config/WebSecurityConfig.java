@@ -1,28 +1,25 @@
-package com.example.calendar.security.Config;
+package com.example.calendar.global.security.Config;
 
-import com.example.calendar.security.Jwt.JwtAuthFilter;
-import com.example.calendar.security.Jwt.JwtUtil;
+import com.example.calendar.global.security.Jwt.JwtAuthFilter;
+import com.example.calendar.global.security.Jwt.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.ErrorResponse;
 
 import java.io.PrintWriter;
 
@@ -72,6 +69,7 @@ public class WebSecurityConfig  {
                 .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build(); // 보안 필터 체인 설정 반환
     }
+
 
     private final AuthenticationEntryPoint unauthorizedEntryPoint =
             (request, response, authException) -> {

@@ -1,8 +1,7 @@
-package com.example.calendar.security.UserDetails;
+package com.example.calendar.global.security.UserDetails;
 
 import com.example.calendar.entity.User;
 import com.example.calendar.repository.UserRepository;
-import com.example.calendar.security.UserDetails.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
