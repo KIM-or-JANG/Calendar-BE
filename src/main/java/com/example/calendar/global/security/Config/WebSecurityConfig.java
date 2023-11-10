@@ -70,6 +70,7 @@ public class WebSecurityConfig  {
         return http.build(); // 보안 필터 체인 설정 반환
     }
 
+
     private final AuthenticationEntryPoint unauthorizedEntryPoint =
             (request, response, authException) -> {
                 ErrorResponse fail = new ErrorResponse(HttpStatus.UNAUTHORIZED, "Not Token in Request");
