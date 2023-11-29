@@ -20,11 +20,13 @@ public class User {
     private String userName;
 
     @Column
-    private String userBirthDay;
+    private String email;
 
     @Column
-    private String userProfil;
+    private String picture;
 
+    @Column
+    private String userBirthDay;
 
     @OneToMany
     @JoinColumn(name = "friend_id")

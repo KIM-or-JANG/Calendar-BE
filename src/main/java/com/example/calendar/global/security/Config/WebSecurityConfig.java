@@ -2,6 +2,7 @@ package com.example.calendar.global.security.Config;
 
 import com.example.calendar.global.security.Jwt.JwtAuthFilter;
 import com.example.calendar.global.security.Jwt.JwtUtil;
+import com.example.calendar.service.CustomOAuth2UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ import java.io.PrintWriter;
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화 //관리자용 API를 위해 활용
 public class WebSecurityConfig  {
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtUtil jwtUtil; // JwtUtil 클래스의 인스턴스를 주입받음
 
     @Bean
@@ -62,6 +64,11 @@ public class WebSecurityConfig  {
 //                                .requestMatchers("/admins/**", "/api/v1/admins/**").hasRole(Role.ADMIN.name()) // 특정 경로에 대한 접근 권한 설정
                                 .anyRequest().authenticated()// 나머지 모든 요청은 인증 필요
                         )
+                .oauth2Login(oauth2 -> oauth2                              //Oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                )
                 .exceptionHandling(
                         (exceptionConfig) -> exceptionConfig.authenticationEntryPoint(unauthorizedEntryPoint) // 인증 실패 시 처리를 위한 핸들러 지정
                                 .accessDeniedHandler(accessDeniedHandler) // 권한 없음 시 처리를 위한 핸들러 지정
