@@ -17,6 +17,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다."),
     NONEXISTENT_COMMENT(HttpStatus.BAD_REQUEST, "해당 댓글이 존재하지 않습니다."),
     INVALID_TYPE(HttpStatus.BAD_REQUEST, "type을 확인해주세요."),
+    EXPIRED_JWT_TOKEN(HttpStatus.UNAUTHORIZED,  "Expired JWT token, 만료된 JWT token 입니다."),
 
     // 401
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
