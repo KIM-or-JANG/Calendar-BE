@@ -27,4 +27,11 @@ public class CalendarController {
                                            @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
         return calendarService.getMonthData(month, year, userDetails);
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<Message> test(
+            @RequestParam("month") String month, @RequestParam("year") String year,
+            @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
+        return calendarService.test(month, year, userDetails);
+    }
 }

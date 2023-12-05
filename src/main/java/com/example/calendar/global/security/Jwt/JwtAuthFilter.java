@@ -2,6 +2,7 @@ package com.example.calendar.global.security.Jwt;
 
 import com.example.calendar.dto.SecurityExceptionDto;
 import com.example.calendar.entity.User;
+import com.example.calendar.entity.UserRoleEnum;
 import com.example.calendar.global.exception.CustomException;
 import com.example.calendar.global.exception.ErrorCode;
 import com.example.calendar.repository.UserRepository;
@@ -39,7 +40,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // 토큰이 존재하면 유효성 검사를 수행하고, 유효하지 않은 경우 예외 처리
         if (accessToken == null) {
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);    //카카오 로그인 오류 부분 42번째 라인
         } else {
             if (jwtUtil.validateToken(accessToken)) {
                 setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
@@ -51,14 +52,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         () -> new CustomException(ErrorCode.USER_NOT_FOUND));
                 //새로운 ACCESS TOKEN 발급
                 log.info("===== 새로운 Access Token");
-                String newAccessToken = jwtUtil.createToken(user.getEmail(), "Access", user.getId());
+                String newAccessToken = jwtUtil.createToken(user.getEmail(), "Access", user.getId(), UserRoleEnum.USER);
                 //Header 에 ACCESS TOKEN 추가
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(userEmail);
                 // Refresh Token 재발급 로직
                 log.info("===== Create New Refresh Token");
                 long refreshTime = jwtUtil.getExpirationTime(refreshToken);
-                String newRefreshToken = jwtUtil.createNewRefreshToken(user.getEmail(), refreshTime, user.getId());
+                String newRefreshToken = jwtUtil.createNewRefreshToken(user.getEmail(), refreshTime, user.getId(), UserRoleEnum.USER);
                 jwtUtil.setHeaderRefreshToken(response, newRefreshToken);
             } else if (refreshToken == null) {
                 jwtExceptionHandler(response, "AccessToken 이 만료되었습니다.", HttpStatus.BAD_REQUEST.value());

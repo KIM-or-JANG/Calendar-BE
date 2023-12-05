@@ -32,6 +32,7 @@ import java.util.Optional;
 public class JwtUtil {
 
     private static final String BEARER_PREFIX = "Bearer ";
+    public static final String AUTHORIZATION_KEY = "auth";
     public static final String ACCESS_TOKEN = "ACCESSTOKEN";
     public static final String REFRESH_TOKEN = "REFRESHTOKEN";
     public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -62,17 +63,18 @@ public class JwtUtil {
 
     // 토큰 생성
     public JwtTokenDto createAllToken(String email, Long id) {
-        return new JwtTokenDto(createToken(email, "Access", id), createToken(email, "Refresh", id));
+        return new JwtTokenDto(createToken(email, "Access", id, UserRoleEnum.USER), createToken(email, "Refresh", id, UserRoleEnum.USER));
     }
 
-    public String createToken(String email, String token, Long id) {
+    public String createToken(String email, String token, Long id, UserRoleEnum role) {
         Date date = new Date();
         long time = token.equals("Access") ? ACCESS_TIME : REFRESH_TIME;
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(email)
-                        .claim("userId", id)
+                        .setSubject(email)  // 이메일을 주체로 설정
+                        .claim("userId", id) // 사용자 ID를 사용자 정의 클레임으로 설정
+                        .claim(AUTHORIZATION_KEY, role)  // 사용자 권한을 사용자 정의 클레임으로 설정
                         .setExpiration(new Date(date.getTime() + time))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
@@ -80,13 +82,14 @@ public class JwtUtil {
     }
 
     //Refresh Token 재발급
-    public String createNewRefreshToken(String email, long time, Long id) {
+    public String createNewRefreshToken(String email, long time, Long id, UserRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(email)
                         .claim("userId", id)
+                        .claim(AUTHORIZATION_KEY, role)  // 사용자 권한을 사용자 정의 클레임으로 설정
                         .setExpiration(new Date(date.getTime() + time))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
@@ -154,6 +157,8 @@ public class JwtUtil {
         }
         response.setHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.setHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
+        log.info("Access Token: {}", tokenDto.getAccessToken());
+        log.info("Refresh Token: {}", tokenDto.getRefreshToken());
     }
 
     // 토큰에서 만료 시간 정보 추출

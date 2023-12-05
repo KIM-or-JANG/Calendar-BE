@@ -96,6 +96,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/user/kakao/callback").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
                 .requestMatchers("/api/token/**").permitAll()
+                .requestMatchers("/kimandjang/test").permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
         );
