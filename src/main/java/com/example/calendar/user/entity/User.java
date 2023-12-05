@@ -1,6 +1,6 @@
 package com.example.calendar.user.entity;
 
-import com.example.calendar.Scheadule.entity.Friend;
+import com.example.calendar.scheadule.entity.Friend;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

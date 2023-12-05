@@ -1,6 +1,5 @@
-package com.example.calendar.Scheadule.entity;
+package com.example.calendar.scheadule.entity;
 
-import com.example.calendar.Scheadule.entity.Schedule;
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;

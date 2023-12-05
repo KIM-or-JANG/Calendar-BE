@@ -1,6 +1,6 @@
-package com.example.calendar.Scheadule.dto;
+package com.example.calendar.scheadule.dto;
 
-import com.example.calendar.Scheadule.entity.Schedule;
+import com.example.calendar.scheadule.entity.Schedule;
 import lombok.Getter;
 
 import java.util.List;

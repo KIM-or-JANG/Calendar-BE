@@ -1,11 +1,11 @@
-package com.example.calendar.Scheadule.service;
+package com.example.calendar.scheadule.service;
 
-import com.example.calendar.Scheadule.entity.RoomUser;
-import com.example.calendar.Scheadule.entity.Schedule;
-import com.example.calendar.Scheadule.repository.RoomRepository;
-import com.example.calendar.Scheadule.repository.RoomUserRepository;
-import com.example.calendar.Scheadule.repository.ScheduleRepository;
-import com.example.calendar.Scheadule.dto.ScheaduleResponseDto;
+import com.example.calendar.scheadule.entity.RoomUser;
+import com.example.calendar.scheadule.entity.Schedule;
+import com.example.calendar.scheadule.repository.RoomRepository;
+import com.example.calendar.scheadule.repository.RoomUserRepository;
+import com.example.calendar.scheadule.repository.ScheduleRepository;
+import com.example.calendar.scheadule.dto.ScheaduleResponseDto;
 import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;

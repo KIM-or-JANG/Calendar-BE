@@ -1,4 +1,4 @@
-package com.example.calendar.Scheadule.entity;
+package com.example.calendar.scheadule.entity;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.example.calendar.Scheadule.repository;
+package com.example.calendar.scheadule.repository;
 
-import com.example.calendar.Scheadule.entity.Schedule;
+import com.example.calendar.scheadule.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
