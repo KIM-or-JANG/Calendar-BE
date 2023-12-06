@@ -25,7 +25,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
@@ -47,10 +46,11 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
-                .requestMatchers("/static/**");
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // resources 접근 허용 설정
+        return web -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())  // H2 > MySQL 전환시 삭제
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Override
@@ -83,15 +83,14 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.csrf((csrf) -> csrf.disable());
         http.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/user/kakao/callback").permitAll()
-                .requestMatchers("/api/user/**").permitAll()
-                .requestMatchers("/api/token/**").permitAll()
-                .requestMatchers("/kimandjang/test").permitAll()
-                .requestMatchers(HttpMethod.GET).permitAll()
+//                .requestMatchers("/").permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/kakao/callback")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/token/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET, "/kimandjang/test")).permitAll()
+//                .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
-
         );
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
