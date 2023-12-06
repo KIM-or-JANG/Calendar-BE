@@ -44,4 +44,6 @@ src/main/resources/application-aws.yml
 src/test/resources/application-aws.yml
 src/test/resources/application-aws.yml
 src/main/resources/application-key.properties
+src/main/resources/application-key.yml
 src/main/resources/application-oauth.properties
+src/main/resources/application-oauth.yml
