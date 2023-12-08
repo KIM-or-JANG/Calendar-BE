@@ -59,7 +59,7 @@ public class KakaoUserService {
 
     // 1. "인가 코드"로 "액세스 토큰" 요청(토큰 받기)
     private String getToken(String code) throws JsonProcessingException {
-
+        
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
