@@ -24,12 +24,26 @@ jobs:
           java-version: 17
 
       - uses: actions/checkout@v2
-      - run: touch ./src/main/resources/application.properties
-      - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
+
+      - name: Create application properties
+        run: |
+          touch ./src/main/resources/application.properties
+          echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
+      
+      - name: Create application-key.properties
+        run: |
+          touch ./src/main/resources/application-key.properties
+          echo "${{secrets.AWS_APPLICATION_KEY_JWT}}" > ./src/main/resources/application-key.properties
+      
+      - name: Create application-oauth.properties
+        run: |
+          touch ./src/main/resources/application-oauth.properties
+          echo "${{secrets.AWS_APPLICATION_KEY_OAUTH}}" > ./src/main/resources/application-oauth.properties
+      
       - uses: actions/upload-artifact@v2
         with:
-          name: application.properties
-          path: ./src/main/resources/application.properties
+          name: application-files
+          path: ./src/main/resources/
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -39,7 +53,10 @@ jobs:
         run: ./gradlew build
         shell: bash
 
-        
+      - name: Build with Gradle and Print Log
+        run: |
+          ./gradlew build
+        shell: bash  
         
       # - name: Make Zip File
       #   run: zip -qq -r ./$GITHUB_SHA.zip .
