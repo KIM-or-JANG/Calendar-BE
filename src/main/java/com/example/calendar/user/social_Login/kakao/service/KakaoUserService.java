@@ -38,7 +38,7 @@ public class KakaoUserService {
 
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakaoRedirectUri;
-
+//    카카오로그인 URL
 //    kauth.kakao.com/oauth/authorize?client_id=58fc709768dcd1b5dc6a4f72874b6e2b&redirect_uri=https://kim-or-jang.shop/api/user/kakao/callback&response_type=code
 
     public ResponseEntity<Message> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
