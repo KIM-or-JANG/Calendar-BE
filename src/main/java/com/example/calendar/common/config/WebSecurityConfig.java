@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,10 +45,19 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return configuration.getAuthenticationManager();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // resources 접근 허용 설정
+        return web -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console())  // H2 > MySQL 전환시 삭제
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
+                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("https://kim-or-jang.kro.kr")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "X-AUTH-TOKEN", "Authorization", "Authorization_Refresh", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true)
@@ -57,7 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://kim-or-jang.kro.kr"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization_Refresh", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization_Refresh"));
@@ -74,13 +84,13 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http.csrf((csrf) -> csrf.disable());
         http.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/api/user/kakao/callback").permitAll()
-                .requestMatchers("/api/user/**").permitAll()
-                .requestMatchers("/api/token/**").permitAll()
-                .requestMatchers("/kimandjang/test").permitAll()
-                .requestMatchers(HttpMethod.GET).permitAll()
+//                .requestMatchers("/").permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/kakao/callback")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"/api/token/**")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET, "/kimandjang/test")).authenticated()
+//                .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
         );
 
