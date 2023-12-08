@@ -56,7 +56,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080")
+                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("https://kim-or-jang.kro.kr")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("Content-Type", "X-AUTH-TOKEN", "Authorization", "Authorization_Refresh", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
                 .allowCredentials(true)
@@ -66,7 +67,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://kim-or-jang.kro.kr"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization_Refresh", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization_Refresh"));
@@ -88,7 +89,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/kakao/callback")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/token/**")).permitAll()
-                .requestMatchers(antMatcher(HttpMethod.GET, "/kimandjang/test")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET, "/kimandjang/test")).authenticated()
 //                .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
         );
