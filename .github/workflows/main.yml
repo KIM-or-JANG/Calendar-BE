@@ -51,16 +51,16 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build with Gradle and Print Log
-        run: |
-          ./gradlew build
-        shell: bash
+      
         
       - name: Build with Gradle
         run: ./gradlew build
         shell: bash
 
-        
+      - name: Build with Gradle and Print Log
+        run: |
+          ./gradlew build
+        shell: bash  
         
       # - name: Make Zip File
       #   run: zip -qq -r ./$GITHUB_SHA.zip .
