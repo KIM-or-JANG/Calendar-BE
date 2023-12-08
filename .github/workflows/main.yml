@@ -24,28 +24,29 @@ jobs:
           java-version: 17
 
       - uses: actions/checkout@v2
+      
       - run: touch ./src/main/resources/application.properties
+        shell: bash
+      
       - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
-      - uses: actions/upload-artifact@v2
-        with:
-          name: application.properties
-          path: ./src/main/resources/application.properties
-
-      - uses: actions/checkout@v2
+        shell: bash
+      
       - run: touch ./src/main/resources/application-key.properties
+        shell: bash
+      
       - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-key.properties
-      - uses: actions/upload-artifact@v2
-        with:
-          name: application-key.properties
-          path: ./src/main/resources/application-key.properties
-
-      - uses: actions/checkout@v2
+        shell: bash
+      
       - run: touch ./src/main/resources/application-oauth.properties
+        shell: bash
+      
       - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-oauth.properties
+        shell: bash
+      
       - uses: actions/upload-artifact@v2
         with:
-          name: application-oauth.properties
-          path: ./src/main/resources/application-oauth.properties
+          name: application-files
+          path: ./src/main/resources/
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
