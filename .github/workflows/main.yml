@@ -25,29 +25,25 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Create and upload application.properties
+      - name: Create application properties
         run: |
           touch ./src/main/resources/application.properties
           echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
-        
       
-      - name: Create and upload application-key.properties
+      - name: Create application-key.properties
         run: |
           touch ./src/main/resources/application-key.properties
           echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-key.properties
-        
       
-      - name: Create and upload application-oauth.properties
+      - name: Create application-oauth.properties
         run: |
           touch ./src/main/resources/application-oauth.properties
           echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-oauth.properties
-        
       
       - uses: actions/upload-artifact@v2
         with:
           name: application-files
           path: ./src/main/resources/
-
 
 
       # - uses: actions/checkout@v2
@@ -60,11 +56,6 @@ jobs:
       #   with:
       #     name: application-files
       #     path: ./src/main/resources/
-
-      # - name: Set AWSYML
-      #   run: |
-      #     echo "${{secrets.AWS_APPLICATION_KEY}}" | base64 --decode > src/main/resources/application-aws.yml
-      #     find src
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
