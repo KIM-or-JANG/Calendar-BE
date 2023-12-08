@@ -24,23 +24,23 @@ jobs:
           java-version: 17
 
       - uses: actions/checkout@v2
-      
-      - run: touch ./src/main/resources/application.properties
+
+      - name: Create and upload application.properties
+        run: |
+          touch ./src/main/resources/application.properties
+          echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
         shell: bash
       
-      - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
+      - name: Create and upload application-key.properties
+        run: |
+          touch ./src/main/resources/application-key.properties
+          echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-key.properties
         shell: bash
       
-      - run: touch ./src/main/resources/application-key.properties
-        shell: bash
-      
-      - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-key.properties
-        shell: bash
-      
-      - run: touch ./src/main/resources/application-oauth.properties
-        shell: bash
-      
-      - run: echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-oauth.properties
+      - name: Create and upload application-oauth.properties
+        run: |
+          touch ./src/main/resources/application-oauth.properties
+          echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application-oauth.properties
         shell: bash
       
       - uses: actions/upload-artifact@v2
