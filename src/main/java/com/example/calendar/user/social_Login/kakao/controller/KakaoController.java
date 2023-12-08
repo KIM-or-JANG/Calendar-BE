@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class KakaoController {
 
     private final KakaoUserService kakaoService;
+
+    //카카오 로그인
     @GetMapping("api/user/kakao/callback")
     public ResponseEntity<Message> kakaoLogin(@RequestParam String code, HttpServletResponse response) throws JsonProcessingException {
         // 리프레시 토큰을 받기 위해 tokenDto 생성
