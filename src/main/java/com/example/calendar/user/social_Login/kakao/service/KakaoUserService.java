@@ -71,6 +71,7 @@ public class KakaoUserService {
         body.add("client_secret", kakaoClientSecret);
         body.add("redirect_uri", kakaoRedirectUri);
         body.add("code", code);
+        
 
         // HTTP 요청 보내기
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
