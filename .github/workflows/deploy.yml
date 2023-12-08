@@ -5,11 +5,11 @@ on:
   push:
     branches: [ main ]
 
-env:
-  PROJECT_NAME: cicdproject
-  BUCKET_NAME: serverstudycicd
-  CODE_DEPLOY_APP_NAME: cicdapp
-  DEPLOYMENT_GROUP_NAME: cicdapp_codedeploy
+# env:
+#   PROJECT_NAME: cicdproject
+#   BUCKET_NAME: serverstudycicd
+#   CODE_DEPLOY_APP_NAME: cicdapp
+#   DEPLOYMENT_GROUP_NAME: cicdapp_codedeploy
 
 jobs:
   build:
@@ -31,16 +31,16 @@ jobs:
         run: ./gradlew build
         shell: bash
         
-      - name: Make Zip File
-        run: zip -qq -r ./$GITHUB_SHA.zip .
-        shell: bash
+      # - name: Make Zip File
+      #   run: zip -qq -r ./$GITHUB_SHA.zip .
+      #   shell: bash
       
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ap-northeast-2
       
       # - name: Upload to S3
         # run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
