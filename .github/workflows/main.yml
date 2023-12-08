@@ -56,10 +56,21 @@ jobs:
       #     name: application.properties
       #     path: ./src/main/resources/application.properties
 
-      - name: Set AWSYML
+      - uses: actions/checkout@v2
+      - name: Create application properties
         run: |
-          echo "${{secrets.AWS_APPLICATION_KEY}}" | base64 --decode > src/main/resources/application-aws.yml
-          find src
+          touch ./src/main/resources/application.properties
+          echo "${{secrets.AWS_APPLICATION_KEY}}" > ./src/main/resources/application.properties
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: application-files
+          path: ./src/main/resources/
+
+      # - name: Set AWSYML
+      #   run: |
+      #     echo "${{secrets.AWS_APPLICATION_KEY}}" | base64 --decode > src/main/resources/application-aws.yml
+      #     find src
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
