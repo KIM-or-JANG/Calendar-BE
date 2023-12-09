@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ec2-user/cicdproject
+
+permissions:
+  - object: /home/ec2-user/cicdproject/
+    owner: ubuntu
+    group: ubuntu
+  - object: /home/ec2-user/cicdproject/scripts/deploy.sh
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 777
+
+hooks:
+  AfterInstall:
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ubuntu
