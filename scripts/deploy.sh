@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/cicdproject
+REPOSITORY=/home/ec2-user/Calendar
 cd $REPOSITORY
 
 APP_NAME=Calendar-0.0.1
