@@ -3,18 +3,11 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ubuntu/cicdproject
-
+    destination: /home/ec2-user/cicdproject
 permissions:
-  - object: /home/ubuntu/cicdproject/
+  - object: /home/ec2-user/cicdproject/
     owner: ubuntu
     group: ubuntu
-  - object: /home/ubuntu/cicdproject/scripts/deploy.sh
-    pattern: "**"
-    owner: ubuntu
-    group: ubuntu
-    mode: 777
-
 hooks:
   AfterInstall:
     - location: scripts/deploy.sh
