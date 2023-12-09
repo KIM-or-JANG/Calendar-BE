@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-REPOSITORY=/home/ec2-user/cicdproject
+REPOSITORY=/home/ec2-user/Calendar
 cd $REPOSITORY
 
-APP_NAME=Calendar-BE
+APP_NAME=Calendar-0.0.1
 JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep 'SNAPSHOT.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/build/libs/$JAR_NAME
 
