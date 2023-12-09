@@ -3,12 +3,12 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ec2-user/Calendar
+    destination: /home/ec2-user/cicdproject
 permissions:
-  - object: /home/ec2-user/Calendar/
+  - object: /home/ec2-user/cicdproject/
     owner: ubuntu
     group: ubuntu
-  - object: /home/ec2-user/Calendar/scripts/deploy.sh
+  - object: /home/ec2-user/cicdproject/scripts/deploy.sh
   pattern: "**"
   owner: ubuntu
   group: ubuntu
