@@ -50,7 +50,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         // resources 접근 허용 설정
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())  // H2 > MySQL 전환시 삭제
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .and().ignoring().requestMatchers("/asd");
     }
 
     @Override
