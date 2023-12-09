@@ -3,13 +3,13 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ec2-user/cicdproject
+    destination: /home/ubuntu/cicdproject
 
 permissions:
-  - object: /home/ec2-user/cicdproject/
+  - object: /home/ubuntu/cicdproject/
     owner: ubuntu
     group: ubuntu
-  - object: /home/ec2-user/cicdproject/scripts/deploy.sh
+  - object: /home/ubuntu/cicdproject/scripts/deploy.sh
     pattern: "**"
     owner: ubuntu
     group: ubuntu
