@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class asdController {
 
-    @GetMapping("/asd")
-    public ResponseEntity<Message> asd ()
-             {
-        return new ResponseEntity<>(new Message("테스트 성공",null), HttpStatus.OK);
-    }
+//    @GetMapping("/asd")
+//    public ResponseEntity<Message> asd ()
+//             {
+//        return new ResponseEntity<>(new Message("테스트 성공",null), HttpStatus.OK);
+//    }
 }
