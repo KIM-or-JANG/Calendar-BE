@@ -24,4 +24,5 @@ public class KakaoController {
         // 리프레시 토큰을 받기 위해 tokenDto 생성
         return kakaoService.kakaoLogin(code,response);
     }
+    
 }
