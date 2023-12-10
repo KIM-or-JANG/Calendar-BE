@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping
 @RequiredArgsConstructor
 public class asdController {
-//      15.165.160.195
-//    @GetMapping("/asd")
-//    public ResponseEntity<Message> asd ()
-//             {
-//        return new ResponseEntity<>(new Message("테스트 성공",null), HttpStatus.OK);
-//    }
+    @GetMapping("/asd")
+    public ResponseEntity<Message> asd ()
+             {
+        return new ResponseEntity<>(new Message("테스트 성공",null), HttpStatus.OK);
+    }
 }
