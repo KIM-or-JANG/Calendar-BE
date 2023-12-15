@@ -2,6 +2,7 @@ package com.example.calendar.hoilyDay.controller;
 
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
+import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
 import com.example.calendar.scheadule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +17,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/kimandjang")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class HoliDayController {
 
-    private final ScheduleService calendarService;
+    private final HoliyDaySercice holiyDaySercice;
     @GetMapping("/test")
     public ResponseEntity<Message> test(
             @RequestParam("month") String month, @RequestParam("year") String year,
             @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
-        return calendarService.test(month, year, userDetails);
+        return holiyDaySercice.test(month, year, userDetails);
     }
 }

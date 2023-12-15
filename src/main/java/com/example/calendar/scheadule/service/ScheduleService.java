@@ -42,8 +42,5 @@ public class ScheduleService {
         return new ResponseEntity<>(new Message(null,scheaduleResponseDto),HttpStatus.OK);
     }
 
-    public ResponseEntity<Message> test(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
-        return new ResponseEntity<>(new Message("공공데이터", holiyDay.holiydata(month, year)), HttpStatus.OK);
-    }
 }
 
