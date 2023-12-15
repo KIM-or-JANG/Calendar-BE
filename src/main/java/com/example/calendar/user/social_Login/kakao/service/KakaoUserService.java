@@ -40,6 +40,7 @@ public class KakaoUserService {
     private String kakaoRedirectUri;
 //    카카오로그인 URL
 //    kauth.kakao.com/oauth/authorize?client_id=58fc709768dcd1b5dc6a4f72874b6e2b&redirect_uri=https://kim-or-jang.shop/api/user/kakao/callback&response_type=code
+//    kauth.kakao.com/oauth/authorize?client_id=58fc709768dcd1b5dc6a4f72874b6e2b&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code
 
     public ResponseEntity<Message> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
@@ -70,6 +71,7 @@ public class KakaoUserService {
         body.add("client_id", kakaoClientId);
         body.add("client_secret", kakaoClientSecret);
         body.add("redirect_uri", kakaoRedirectUri);
+//        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
         body.add("code", code);
         
 
