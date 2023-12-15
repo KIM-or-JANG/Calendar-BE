@@ -25,5 +25,10 @@ public class RoomUser {
     @Column
     private boolean manager;
 
-
+    //createRoom
+    public RoomUser(Room room, boolean b) {
+        this.user = room.getManager();
+        this.room = room;
+        this.manager = b;
+    }
 }
