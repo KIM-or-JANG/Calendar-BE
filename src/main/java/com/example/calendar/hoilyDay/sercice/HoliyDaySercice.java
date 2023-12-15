@@ -1,9 +1,13 @@
 package com.example.calendar.hoilyDay.sercice;
 
 
+import com.example.calendar.common.security.userDetails.UserDetailsImpl;
+import com.example.calendar.common.util.Message;
 import com.example.calendar.hoilyDay.dto.HoliyDayRequestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -83,4 +87,8 @@ public class HoliyDaySercice {
         }
             return anniversaryInfoList;
         }
+    //공공데이터
+    public ResponseEntity<Message> test(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
+        return new ResponseEntity<>(new Message("공공데이터", holiydata(month, year)), HttpStatus.OK);
+    }
     }
