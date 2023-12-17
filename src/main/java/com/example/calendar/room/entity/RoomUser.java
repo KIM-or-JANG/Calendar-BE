@@ -1,5 +1,6 @@
-package com.example.calendar.scheadule.entity;
+package com.example.calendar.room.entity;
 
+import com.example.calendar.room.entity.Room;
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -30,5 +31,12 @@ public class RoomUser {
         this.user = room.getManager();
         this.room = room;
         this.manager = b;
+    }
+    //invateRoom
+
+    public RoomUser(User user, Room room, boolean manager) {
+        this.user = user;
+        this.room = room;
+        this.manager = manager;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.calendar.scheadule.entity;
+package com.example.calendar.room.entity;
 
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
@@ -21,9 +21,10 @@ public class Room {
     private String roomProfile;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "user_id")
     private User manager;
 
+    //createRoom
     public Room(String roomName, String roomprofile, User user) {
         this.roomName = roomName;
         this.roomProfile = roomprofile;

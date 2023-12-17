@@ -2,11 +2,8 @@ package com.example.calendar.scheadule.controller;
 
 import com.example.calendar.common.util.Message;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
-import com.example.calendar.scheadule.dto.CreateRoomRequestDto;
-import com.example.calendar.scheadule.service.RoomService;
 import com.example.calendar.scheadule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
