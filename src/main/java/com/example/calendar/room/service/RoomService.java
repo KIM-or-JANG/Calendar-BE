@@ -19,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -29,6 +32,7 @@ public class RoomService {
     private final RoomUserRepository roomUserRepository;
     private final UserRepository userRepository;
     //방 만들기
+    @Transactional
     public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) {
         String roomProfile = null;
         if(roomRequestDto.getRoomprofile() == null) {
@@ -45,6 +49,7 @@ public class RoomService {
         return new ResponseEntity<>(new Message("방 생성 성공",createRoomResponseDto), HttpStatus.OK);
     }
     //방 초대(URL제공으로 초대 or 방장이 직접 초대 or 타인이 방에게 초대 메세지 보내기(방장이 허용) ) = 방장이 직접 초대
+    @Transactional
     public ResponseEntity<Message> inviteUser(InviteRoomRequestDto inviteRoomRequestDto, UserDetailsImpl userDetails) {
         Room room = roomRepository.findByIdAndRoomName(inviteRoomRequestDto.getRoomId(), inviteRoomRequestDto.getRoomName())
                 .orElseThrow(
@@ -63,7 +68,22 @@ public class RoomService {
             return new ResponseEntity<>(new Message("초대 권한이 없습니다.",null), HttpStatus.BAD_REQUEST);
         }
     }
-
     //방 삭제
+    @Transactional
+    public ResponseEntity<Message> deleteRoom(Long id, String roomName, UserDetailsImpl userDetails) {
+        Room room = roomRepository.findByIdAndRoomName(id,roomName).orElseThrow(
+                () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+        );
+        if(room.getManager().getId() == userDetails.getUser().getId()){
+            roomUserRepository.deleteAllByroom_Id(room.getId());
+            roomRepository.deleteByIdAndRoomName(id, roomName);
+        } else {
+            throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+        }
+        CreateRoomResponseDto createRoomResponseDto = new CreateRoomResponseDto(
+                room.getId(), room.getRoomName(),  room.getRoomProfile(), room.getManager().getId(), room.getManager().getNickName()
+        );
+        return new ResponseEntity<>(new Message("방이 삭제 되었습니다.",createRoomResponseDto),HttpStatus.OK);
+    }
 
 }

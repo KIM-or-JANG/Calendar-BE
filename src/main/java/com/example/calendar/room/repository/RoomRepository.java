@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Optional<Room> findByIdAndRoomName(Long roomId, String roomName);
+
+    void deleteByIdAndRoomName(Long id, String roomName);
+
 }

@@ -30,4 +30,11 @@ public class RoomController {
                                                @AuthenticationPrincipal UserDetailsImpl userDetails){
         return roomService.inviteUser(inviteUserDto, userDetails);
     }
+    //방 삭제
+    @DeleteMapping("delete/room")
+    public ResponseEntity<Message> deleteRoom(@RequestParam Long id,
+                                              @RequestParam String roomName ,
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails ) {
+        return roomService.deleteRoom(id,roomName, userDetails);
+    }
 }
