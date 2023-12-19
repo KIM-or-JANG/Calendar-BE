@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,6 +32,7 @@ public class ScheduleService {
     private final RoomUserRepository roomUserRepository;
 
     //해달 달의 데이터
+    @Transactional
     public ResponseEntity<Message> getMonthData(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
         List<RoomUser> roomUserList = roomUserRepository.findByuser_Id(userDetails.getUser().getId());
         List<Schedule> schedules = new ArrayList<>();
