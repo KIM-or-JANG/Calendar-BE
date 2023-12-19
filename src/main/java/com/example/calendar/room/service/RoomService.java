@@ -1,5 +1,7 @@
 package com.example.calendar.room.service;
 
+import com.example.calendar.common.exception.CustomException;
+import com.example.calendar.common.exception.ErrorCode;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.room.dto.CreateRoomRequestDto;
@@ -13,10 +15,12 @@ import com.example.calendar.room.repository.RoomUserRepository;
 import com.example.calendar.user.entity.User;
 import com.example.calendar.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RoomService {
@@ -26,7 +30,14 @@ public class RoomService {
     private final UserRepository userRepository;
     //방 만들기
     public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) {
-        Room room = roomRepository.saveAndFlush(new Room(roomRequestDto.getRoomName(), roomRequestDto.getRoomprofile(), userDetails.getUser()));
+        String roomProfile = null;
+        if(roomRequestDto.getRoomprofile() == null) {
+            roomProfile = roomRequestDto.getRoomName();
+        }
+        else {
+//            s3사용
+        }
+        Room room = roomRepository.saveAndFlush(new Room(roomRequestDto.getRoomName(), roomProfile, userDetails.getUser()));
         roomUserRepository.saveAndFlush(new RoomUser(room, true));
         CreateRoomResponseDto createRoomResponseDto = new CreateRoomResponseDto(
                 room.getId(), room.getRoomName(),  room.getRoomProfile(), room.getManager().getId(), room.getManager().getNickName()
@@ -35,9 +46,15 @@ public class RoomService {
     }
     //방 초대(URL제공으로 초대 or 방장이 직접 초대 or 타인이 방에게 초대 메세지 보내기(방장이 허용) ) = 방장이 직접 초대
     public ResponseEntity<Message> inviteUser(InviteRoomRequestDto inviteRoomRequestDto, UserDetailsImpl userDetails) {
-        Room room = roomRepository.findByIdAndRoomName(inviteRoomRequestDto.getRoomId(), inviteRoomRequestDto.getRoomName());
-        if(room.getManager() == userDetails.getUser()) {
-            User user = userRepository.findByIdAndNickNameAndEmail(inviteRoomRequestDto.getUserId(), inviteRoomRequestDto.getUserName(), inviteRoomRequestDto.getUserEmail());
+        Room room = roomRepository.findByIdAndRoomName(inviteRoomRequestDto.getRoomId(), inviteRoomRequestDto.getRoomName())
+                .orElseThrow(
+                        () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+                );
+        if(room.getManager().getId() == userDetails.getUser().getId()) {
+            User user = userRepository.findByIdAndEmail(inviteRoomRequestDto.getUserId(), inviteRoomRequestDto.getUserEmail())
+                    .orElseThrow(
+                            () -> new CustomException(ErrorCode.USER_NOT_FOUND)
+                    );
             roomUserRepository.saveAndFlush(new RoomUser(user, room, false));
             InvateRoomResponseDto invateRoomResponseDto = new InvateRoomResponseDto(room.getId(), room.getRoomName(), user.getId(), user.getNickName());
             return new ResponseEntity<>(new Message("방 초대 성공",invateRoomResponseDto),HttpStatus.OK);
@@ -46,4 +63,7 @@ public class RoomService {
             return new ResponseEntity<>(new Message("초대 권한이 없습니다.",null), HttpStatus.BAD_REQUEST);
         }
     }
+
+    //방 삭제
+
 }
