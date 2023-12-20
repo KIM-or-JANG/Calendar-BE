@@ -29,7 +29,7 @@ public class ScheduleController {
         return scheduleService.getMonthData(month, year, userDetails);
     }
     //일정 작성
-    @PostMapping("/create/schedule")
+    @PostMapping("/schedule/create")
     public ResponseEntity<Message> createSchedlue(@RequestBody ScheduleRequestDto scheduleRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return scheduleService.createSchedlue(scheduleRequestDto, userDetails);
     }

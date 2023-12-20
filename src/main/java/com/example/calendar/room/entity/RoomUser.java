@@ -5,6 +5,8 @@ import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -21,6 +23,7 @@ public class RoomUser {
 
     @ManyToOne
     @JoinColumn(name = "room_Id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
     @Column
