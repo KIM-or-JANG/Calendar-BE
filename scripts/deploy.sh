@@ -19,11 +19,11 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+#nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
 
 # 백그라운드에서 실행하고 로그를 nohup.out 파일에 저장
-nohup java -jar /home/ec2-user/Calendar/build/libs/Calendar-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
-# nohup java -jar $JAR_PATH > /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
+#nohup java -jar /home/ec2-user/Calendar/build/libs/Calendar-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+ nohup java -jar $JAR_PATH > /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
 
 # # 백그라운드에서 실행하고 로그를 nohup.out 파일에 저장
 # nohup java -jar /home/ec2-user/Calendar/build/libs/Calendar-0.0.1-SNAPSHOT.jar > /home/ec2-user/deploy.log 2>/home/ec2-user/deploy_err.log &
