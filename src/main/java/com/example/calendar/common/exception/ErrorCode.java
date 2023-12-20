@@ -25,7 +25,7 @@ public enum ErrorCode {
 
     // 403
     FORBIDDEN_MEMBER(HttpStatus.FORBIDDEN,"403", "권한이 없는 사용자입니다."),
-    FORBIDDEN_ADMIN(HttpStatus.FORBIDDEN, "403", "관리자 권한이 없습니다."),
+    FORBIDDEN_MANAGER(HttpStatus.FORBIDDEN, "403", "관리자 권한이 없습니다."),
 
 
     //404 NOT_FOUND,

@@ -6,14 +6,14 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class ScheaduleResponseDto {
+public class CalendarResponseDto {
 
     private Object holiday;
     private List<Schedule> scheduleList;
 
 
 
-    public ScheaduleResponseDto(Object holiydata, List<Schedule> schedules) {
+    public CalendarResponseDto(Object holiydata, List<Schedule> schedules) {
         this.holiday = holiydata;
         this.scheduleList = schedules;
     }
