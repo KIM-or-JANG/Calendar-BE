@@ -35,10 +35,7 @@ public class RoomService {
     @Transactional
     public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) {
         String roomProfile = null;
-        if(roomRequestDto.getRoomprofile() == null) {
-            roomProfile = roomRequestDto.getRoomName();
-        }
-        else {
+        if(roomRequestDto.getRoomprofile() != null) {
 //            s3사용
         }
         Room room = roomRepository.saveAndFlush(new Room(roomRequestDto.getRoomName(), roomProfile, userDetails.getUser()));
@@ -75,7 +72,7 @@ public class RoomService {
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
         );
         if(room.getManager().getId() == userDetails.getUser().getId()){
-            roomUserRepository.deleteAllByroom_Id(room.getId());
+//            roomUserRepository.deleteAllByroom_Id(room.getId());
             roomRepository.deleteByIdAndRoomName(id, roomName);
         } else {
             throw new CustomException(ErrorCode.FORBIDDEN_MANAGER);

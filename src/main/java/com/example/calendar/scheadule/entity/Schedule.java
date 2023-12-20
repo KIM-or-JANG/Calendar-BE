@@ -4,6 +4,8 @@ import com.example.calendar.room.entity.Room;
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @NoArgsConstructor
@@ -21,6 +23,7 @@ public class Schedule {  //사용자 일정 entity
 
     @ManyToOne
     @JoinColumn(name = "room_Id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
    @ManyToOne
