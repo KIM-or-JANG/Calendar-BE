@@ -65,7 +65,7 @@ public class RoomService {
             return new ResponseEntity<>(new Message("방 초대 성공",invateRoomResponseDto),HttpStatus.OK);
         }
         else {
-            return new ResponseEntity<>(new Message("초대 권한이 없습니다.",null), HttpStatus.BAD_REQUEST);
+            throw new CustomException(ErrorCode.FORBIDDEN_MANAGER);
         }
     }
     //방 삭제
@@ -78,7 +78,7 @@ public class RoomService {
             roomUserRepository.deleteAllByroom_Id(room.getId());
             roomRepository.deleteByIdAndRoomName(id, roomName);
         } else {
-            throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+            throw new CustomException(ErrorCode.FORBIDDEN_MANAGER);
         }
         CreateRoomResponseDto createRoomResponseDto = new CreateRoomResponseDto(
                 room.getId(), room.getRoomName(),  room.getRoomProfile(), room.getManager().getId(), room.getManager().getNickName()

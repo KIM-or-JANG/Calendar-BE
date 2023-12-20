@@ -14,10 +14,10 @@ public class Schedule {  //사용자 일정 entity
     private Long Id;
 
     @Column
-    private String dataTitle;   //일정 제목
+    private String schedule;   //일정
 
     @Column
-    private String date;    //날짜
+    private String locdate;    //날짜
 
     @ManyToOne
     @JoinColumn(name = "room_Id")
@@ -27,4 +27,11 @@ public class Schedule {  //사용자 일정 entity
    @JoinColumn(name = "user_Id")
    private User user;
 
+   //createSchedule
+    public Schedule(String schedule, String locdate, Room room, User user) {
+        this.schedule = schedule;
+        this.locdate = locdate;
+        this.room = room;
+        this.user = user;
+    }
 }

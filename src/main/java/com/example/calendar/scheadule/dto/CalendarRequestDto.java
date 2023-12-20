@@ -3,7 +3,7 @@ package com.example.calendar.scheadule.dto;
 import lombok.Getter;
 
 @Getter
-public class ScheaduleRequestDto {
+public class CalendarRequestDto {
 
     private String dateTitle;
 
@@ -13,7 +13,7 @@ public class ScheaduleRequestDto {
 
     private String year;
 
-    public ScheaduleRequestDto(String dateTitle, String date, String month, String year) {
+    public CalendarRequestDto(String dateTitle, String date, String month, String year) {
         this.dateTitle = dateTitle;
         this.date = date;
         this.month = month;
