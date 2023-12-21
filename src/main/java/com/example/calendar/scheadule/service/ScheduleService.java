@@ -14,6 +14,7 @@ import com.example.calendar.scheadule.dto.CalendarResponseDto;
 import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
+import com.example.calendar.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,19 @@ public class ScheduleService {
         );
         scheduleRepository.saveAndFlush(new Schedule(scheduleRequestDto.getSchedule(), scheduleRequestDto.getLocdate(), room, userDetails.getUser()));
         return new ResponseEntity<>(new Message("일정 작성 성공",new ScheduleResponseDto(room.getId(), room.getRoomName(), scheduleRequestDto.getLocdate(), scheduleRequestDto.getSchedule())),HttpStatus.OK);
+    }
+    //일정 수정
+    public ResponseEntity<Message> updateSchedule(ScheduleRequestDto scheduleRequestDto, User user) {
+       Schedule schedule =  scheduleRepository.findByroom_IdAndUser_IdAndLocdate(scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
+               () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+       );
+       schedule.UpdateData(scheduleRequestDto.getSchedule());
+       scheduleRepository.saveAndFlush(schedule);
+       return new ResponseEntity<>(new Message("일정 수정 성공",new ScheduleResponseDto(
+               schedule.getRoom().getId(),
+               schedule.getRoom().getRoomName(),
+               schedule.getLocdate(),
+               schedule.getSchedule())),HttpStatus.OK);
     }
 
 }

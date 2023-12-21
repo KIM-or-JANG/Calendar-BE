@@ -33,4 +33,9 @@ public class ScheduleController {
     public ResponseEntity<Message> createSchedlue(@RequestBody ScheduleRequestDto scheduleRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return scheduleService.createSchedlue(scheduleRequestDto, userDetails);
     }
+    //일정 수정
+    @PatchMapping("/schedule/put")
+    public ResponseEntity<Message> updateSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return scheduleService.updateSchedule(scheduleRequestDto, userDetails.getUser());
+    }
 }

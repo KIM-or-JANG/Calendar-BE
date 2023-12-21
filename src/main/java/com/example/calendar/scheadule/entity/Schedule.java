@@ -3,11 +3,13 @@ package com.example.calendar.scheadule.entity;
 import com.example.calendar.room.entity.Room;
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Schedule {  //사용자 일정 entity
 
@@ -36,5 +38,9 @@ public class Schedule {  //사용자 일정 entity
         this.locdate = locdate;
         this.room = room;
         this.user = user;
+    }
+
+    public void UpdateData(String schedule) {
+        this.schedule = schedule;
     }
 }
