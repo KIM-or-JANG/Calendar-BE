@@ -37,10 +37,28 @@ public class CommentService {
                 () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         Comment comment = commentRepository.saveAndFlush(new Comment(userDetails.getUsername(), commentRequestDto.getComment(), userDetails.getUser(), schedule ));
-        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), comment.getId(), comment.getComment());
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
         return new ResponseEntity<>(new Message("댓글 작성 완료",commentResponseDto), HttpStatus.OK);
     }
     //댓글 수정
-
+    public ResponseEntity<Message> updateComment(Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
+        Comment comment = commentRepository.findByIdAndSchedule_IdAndUser_Id(commentId, commentRequestDto.getScheduleId(), userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
+        );
+        Room room = roomRepository.findById(commentRequestDto.getRoomId()).orElseThrow(
+                () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+        );
+        Schedule schedule = scheduleRepository.findById(commentRequestDto.getScheduleId()).orElseThrow(
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+        );
+        if (comment.getUser().getId() == userDetails.getUser().getId() || room.getManager().getId() == userDetails.getUser().getId()) {
+            comment.update(commentRequestDto.getComment());
+        commentRepository.saveAndFlush(comment);
+        } else{
+          new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+        }
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
+        return new ResponseEntity<>(new Message("댓글 수정 완료", commentResponseDto), HttpStatus.OK);
+    }
 
 }

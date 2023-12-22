@@ -30,11 +30,15 @@ public class Comment {
     @JoinColumn(name = "schedule_Id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Schedule schedule;
-
+    //createComment
     public Comment(String userName, String comment, User user, Schedule schedule) {
         this.userName = userName;
         this.comment = comment;
         this.user = user;
         this.schedule = schedule;
+    }
+    //updateComment
+    public void update(String comment) {
+        this.comment = comment;
     }
 }

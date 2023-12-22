@@ -65,6 +65,9 @@ public class ScheduleService {
        Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
        );
+       roomRepository.findById(scheduleRequestDto.getRoomId()).orElseThrow(
+               () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+       );
        if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
            schedule.UpdateData(scheduleRequestDto.getSchedule());
            scheduleRepository.saveAndFlush(schedule);

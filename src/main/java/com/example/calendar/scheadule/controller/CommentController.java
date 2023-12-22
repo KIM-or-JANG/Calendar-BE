@@ -7,19 +7,21 @@ import com.example.calendar.scheadule.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
-
+    //댓글 작성
     @PostMapping("/comment/create")
     public ResponseEntity<Message> createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.createComment(commentRequestDto, userDetails);
+    }
+    //댓글 수정
+    @PatchMapping("/comment/update")
+    public ResponseEntity<Message> updateComment(@RequestParam Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.updateComment(commentId, commentRequestDto, userDetails);
     }
 }
