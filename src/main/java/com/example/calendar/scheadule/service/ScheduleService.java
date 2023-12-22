@@ -57,18 +57,19 @@ public class ScheduleService {
         roomUserRepository.findByuser_IdAndRoom_Id(userDetails.getUser().getId(), scheduleRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
         );
-        scheduleRepository.saveAndFlush(new Schedule(scheduleRequestDto.getSchedule(), scheduleRequestDto.getLocdate(), room, userDetails.getUser()));
-        return new ResponseEntity<>(new Message("일정 작성 성공",new ScheduleResponseDto(room.getId(), room.getRoomName(), scheduleRequestDto.getLocdate(), scheduleRequestDto.getSchedule())),HttpStatus.OK);
+        Schedule schedule = scheduleRepository.saveAndFlush(new Schedule(scheduleRequestDto.getSchedule(), scheduleRequestDto.getLocdate(), room, userDetails.getUser()));
+        return new ResponseEntity<>(new Message("일정 작성 성공", new ScheduleResponseDto(schedule.getId(), schedule.getRoom().getId(), schedule.getRoom().getRoomName(), schedule.getLocdate(), schedule.getSchedule())),HttpStatus.OK);
     }
     //일정 수정
-    public ResponseEntity<Message> updateSchedule(ScheduleRequestDto scheduleRequestDto, User user) {
-       Schedule schedule =  scheduleRepository.findByroom_IdAndUser_IdAndLocdate(scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
+    public ResponseEntity<Message> updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto, User user) {
+       Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
        );
        if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
            schedule.UpdateData(scheduleRequestDto.getSchedule());
            scheduleRepository.saveAndFlush(schedule);
            return new ResponseEntity<>(new Message("일정 수정 성공", new ScheduleResponseDto(
+                   schedule.getId(),
                    schedule.getRoom().getId(),
                    schedule.getRoom().getRoomName(),
                    schedule.getLocdate(),
@@ -79,13 +80,14 @@ public class ScheduleService {
        }
     }
     //일정 삭제
-    public ResponseEntity<Message> deleteSchedule(Long roomId, String locdate, User user) {
-        Schedule schedule =  scheduleRepository.findByroom_IdAndUser_IdAndLocdate(roomId, user.getId(), locdate).orElseThrow(
+    public ResponseEntity<Message> deleteSchedule(Long scheduleId,Long roomId, String locdate, User user) {
+        Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, roomId, user.getId(), locdate).orElseThrow(
                 () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
             scheduleRepository.delete(schedule);
             return new ResponseEntity<>(new Message("일정 삭제 성공",new ScheduleResponseDto(
+                    schedule.getId(),
                     schedule.getRoom().getId(),
                     schedule.getRoom().getRoomName(),
                     schedule.getLocdate(),

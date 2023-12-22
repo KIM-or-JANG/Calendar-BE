@@ -39,7 +39,7 @@ public class Schedule {  //사용자 일정 entity
         this.room = room;
         this.user = user;
     }
-
+    //updateSchedule
     public void UpdateData(String schedule) {
         this.schedule = schedule;
     }

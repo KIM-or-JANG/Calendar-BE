@@ -16,4 +16,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
 
     Optional<Schedule> findByroom_IdAndUser_IdAndLocdate(Long roomId, Long id, String locdate);
+
+
+
+    Optional<Schedule> findByIdAndRoom_IdAndUser_IdAndLocdate(Long scheduleId, Long roomId, Long id, String locdate);
 }

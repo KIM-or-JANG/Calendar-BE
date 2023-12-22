@@ -2,11 +2,13 @@ package com.example.calendar.scheadule.entity;
 
 import com.example.calendar.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Comment {
 
@@ -18,7 +20,7 @@ public class Comment {
     private String userName;
 
     @Column
-    private String content;
+    private String comment;
 
     @ManyToOne
     @JoinColumn(name = "user_Id")
@@ -29,4 +31,10 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Schedule schedule;
 
+    public Comment(String userName, String comment, User user, Schedule schedule) {
+        this.userName = userName;
+        this.comment = comment;
+        this.user = user;
+        this.schedule = schedule;
+    }
 }
