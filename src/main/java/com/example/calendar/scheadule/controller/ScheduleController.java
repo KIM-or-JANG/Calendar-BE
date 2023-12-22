@@ -38,4 +38,9 @@ public class ScheduleController {
     public ResponseEntity<Message> updateSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return scheduleService.updateSchedule(scheduleRequestDto, userDetails.getUser());
     }
+    //일정 삭제
+    @DeleteMapping("/schedule/delete")
+    public ResponseEntity<Message> deleteSchedule(@RequestParam Long roomId, String locdate, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return scheduleService.deleteSchedule(roomId, locdate, userDetails.getUser());
+    }
 }

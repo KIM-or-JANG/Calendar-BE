@@ -65,13 +65,35 @@ public class ScheduleService {
        Schedule schedule =  scheduleRepository.findByroom_IdAndUser_IdAndLocdate(scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
        );
-       schedule.UpdateData(scheduleRequestDto.getSchedule());
-       scheduleRepository.saveAndFlush(schedule);
-       return new ResponseEntity<>(new Message("일정 수정 성공",new ScheduleResponseDto(
-               schedule.getRoom().getId(),
-               schedule.getRoom().getRoomName(),
-               schedule.getLocdate(),
-               schedule.getSchedule())),HttpStatus.OK);
+       if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
+           schedule.UpdateData(scheduleRequestDto.getSchedule());
+           scheduleRepository.saveAndFlush(schedule);
+           return new ResponseEntity<>(new Message("일정 수정 성공", new ScheduleResponseDto(
+                   schedule.getRoom().getId(),
+                   schedule.getRoom().getRoomName(),
+                   schedule.getLocdate(),
+                   schedule.getSchedule())), HttpStatus.OK);
+       }
+       else {
+           throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+       }
+    }
+    //일정 삭제
+    public ResponseEntity<Message> deleteSchedule(Long roomId, String locdate, User user) {
+        Schedule schedule =  scheduleRepository.findByroom_IdAndUser_IdAndLocdate(roomId, user.getId(), locdate).orElseThrow(
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+        );
+        if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
+            scheduleRepository.delete(schedule);
+            return new ResponseEntity<>(new Message("일정 삭제 성공",new ScheduleResponseDto(
+                    schedule.getRoom().getId(),
+                    schedule.getRoom().getRoomName(),
+                    schedule.getLocdate(),
+                    schedule.getSchedule())), HttpStatus.OK);
+        }
+        else {
+            throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+        }
     }
 
 }
