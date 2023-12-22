@@ -7,10 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
-
     List<RoomUser> findByuser_Id(Long id);
-
-    void deleteAllByroom_Id(Long id);
-
     Optional<RoomUser> findByuser_IdAndRoom_Id(Long userId, Long roomId);
 }

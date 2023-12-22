@@ -62,11 +62,11 @@ public class ScheduleService {
     }
     //일정 수정
     public ResponseEntity<Message> updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto, User user) {
+        roomRepository.findById(scheduleRequestDto.getRoomId()).orElseThrow(
+                () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+        );
        Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
-       );
-       roomRepository.findById(scheduleRequestDto.getRoomId()).orElseThrow(
-               () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
        );
        if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
            schedule.UpdateData(scheduleRequestDto.getSchedule());
@@ -84,6 +84,9 @@ public class ScheduleService {
     }
     //일정 삭제
     public ResponseEntity<Message> deleteSchedule(Long scheduleId,Long roomId, String locdate, User user) {
+        roomRepository.findById(roomId).orElseThrow(
+                () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+        );
         Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, roomId, user.getId(), locdate).orElseThrow(
                 () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );

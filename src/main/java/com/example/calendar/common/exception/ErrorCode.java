@@ -31,7 +31,8 @@ public enum ErrorCode {
     //404 NOT_FOUND,
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,"404", "유저를 찾을 수 없습니다."),
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "존재하지 않는 방 입니다."),
-    SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "존재하지 않는 스케줄입니다.");
+    SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "404", "존재하지 않는 스케줄입니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND,"404" ,"존재하지 않는 댓글입니다." );
 
     private final HttpStatus status;
     private final String code;

@@ -42,14 +42,14 @@ public class CommentService {
     }
     //댓글 수정
     public ResponseEntity<Message> updateComment(Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
-        Comment comment = commentRepository.findByIdAndSchedule_IdAndUser_Id(commentId, commentRequestDto.getScheduleId(), userDetails.getUser().getId()).orElseThrow(
-                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
-        );
         Room room = roomRepository.findById(commentRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
         );
         Schedule schedule = scheduleRepository.findById(commentRequestDto.getScheduleId()).orElseThrow(
                 () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+        );
+        Comment comment = commentRepository.findByIdAndSchedule_IdAndUser_Id(commentId, commentRequestDto.getScheduleId(), userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
         );
         if (comment.getUser().getId() == userDetails.getUser().getId() || room.getManager().getId() == userDetails.getUser().getId()) {
             comment.update(commentRequestDto.getComment());
@@ -60,5 +60,23 @@ public class CommentService {
         CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
         return new ResponseEntity<>(new Message("댓글 수정 완료", commentResponseDto), HttpStatus.OK);
     }
-
+    //댓글 삭제
+    public ResponseEntity<Message> deleteComment(Long scheduleId, Long commentId, Long roomId, UserDetailsImpl userDetails) {
+        Room room = roomRepository.findById(roomId).orElseThrow(
+                () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
+        );
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+        );
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new CustomException(ErrorCode.COMMENT_NOT_FOUND)
+        );
+        if (comment.getUser().getId() == userDetails.getUser().getId() || room.getManager().getId() == userDetails.getUser().getId()) {
+            commentRepository.delete(comment);
+        } else {
+            new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+        }
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
+        return new ResponseEntity<>(new Message("댓글 삭제 완료",commentResponseDto),HttpStatus.OK);
+    }
 }
