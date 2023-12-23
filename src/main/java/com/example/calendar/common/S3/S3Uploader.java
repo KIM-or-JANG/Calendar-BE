@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@PropertySource("classpath:application-key.properties") // application-s3.properties 파일 로드
 public class S3Uploader {
 
     private final AmazonS3 amazonS3;
