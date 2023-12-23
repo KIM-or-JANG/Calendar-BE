@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class RoomController {
     //방 만들기
     @PostMapping(value = "/create/room", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Message> createRoom(@ModelAttribute CreateRoomRequestDto roomRequestDto,
-                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return roomService.createRoom(roomRequestDto, userDetails);
     }
     //방 초대
@@ -34,7 +36,7 @@ public class RoomController {
     @DeleteMapping("delete/room")
     public ResponseEntity<Message> deleteRoom(@RequestParam Long id,
                                               @RequestParam String roomName ,
-                                              @AuthenticationPrincipal UserDetailsImpl userDetails ) {
+                                              @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException {
         return roomService.deleteRoom(id,roomName, userDetails);
     }
 }

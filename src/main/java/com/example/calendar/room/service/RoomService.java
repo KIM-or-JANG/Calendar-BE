@@ -1,5 +1,6 @@
 package com.example.calendar.room.service;
 
+import com.example.calendar.common.S3.S3Uploader;
 import com.example.calendar.common.exception.CustomException;
 import com.example.calendar.common.exception.ErrorCode;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -31,12 +33,13 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
     private final UserRepository userRepository;
+    private final S3Uploader s3Uploader;
     //방 만들기
     @Transactional
-    public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) {
+    public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) throws IOException {
         String roomProfile = null;
         if(roomRequestDto.getRoomprofile() != null) {
-//            s3사용
+            roomProfile = s3Uploader.upload(roomRequestDto.getRoomprofile());
         }
         Room room = roomRepository.saveAndFlush(new Room(roomRequestDto.getRoomName(), roomProfile, userDetails.getUser()));
         roomUserRepository.saveAndFlush(new RoomUser(room, true));
@@ -67,13 +70,14 @@ public class RoomService {
     }
     //방 삭제
     @Transactional
-    public ResponseEntity<Message> deleteRoom(Long id, String roomName, UserDetailsImpl userDetails) {
+    public ResponseEntity<Message> deleteRoom(Long id, String roomName, UserDetailsImpl userDetails) throws IOException {
         Room room = roomRepository.findByIdAndRoomName(id,roomName).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
         );
         if(room.getManager().getId() == userDetails.getUser().getId()){
 //            roomUserRepository.deleteAllByroom_Id(room.getId());
             roomRepository.deleteByIdAndRoomName(id, roomName);
+            s3Uploader.delete(room.getRoomProfile());
         } else {
             throw new CustomException(ErrorCode.FORBIDDEN_MANAGER);
         }

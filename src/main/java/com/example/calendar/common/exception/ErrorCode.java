@@ -11,7 +11,8 @@ public enum ErrorCode {
 
     // 500
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500", "INTERNAL_SERVER_ERROR"),
-    IMAGE_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"",  "s3 이미지 삭제 실패."),
+    IMAGE_UPLOAD_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"500",  "s3 이미지 업로드 실패."),
+    IMAGE_DELETE_FAIL(HttpStatus.INTERNAL_SERVER_ERROR,"500",  "s3 이미지 삭제 실패."),
 
     // 400
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "400" , "토큰이 유효하지 않습니다."),
