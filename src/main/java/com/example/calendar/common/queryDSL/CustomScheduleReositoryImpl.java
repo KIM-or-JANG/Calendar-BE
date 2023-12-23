@@ -1,4 +1,4 @@
-package com.example.calendar.queryDSL;
+package com.example.calendar.common.queryDSL;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

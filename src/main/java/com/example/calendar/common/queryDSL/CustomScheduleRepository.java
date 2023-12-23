@@ -1,4 +1,4 @@
-package com.example.calendar.queryDSL;
+package com.example.calendar.common.queryDSL;
 
 
 public interface CustomScheduleRepository {

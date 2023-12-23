@@ -1,6 +1,6 @@
 package com.example.calendar.scheadule.repository;
 
-import com.example.calendar.queryDSL.CustomScheduleRepository;
+import com.example.calendar.common.queryDSL.CustomScheduleRepository;
 import com.example.calendar.scheadule.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
