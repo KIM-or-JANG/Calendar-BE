@@ -56,18 +56,18 @@ public class User {
         this.profileImage = profileImage;
         this.role = role;
     }
-
-    public User update(String name, String profileImage) {
+    //userUpdate
+    public User update(String name,String email ,String profileImage) {
         this.nickName = name;
+        this.email = email;
         this.profileImage = profileImage;
-
         return this;
     }
 
     public String getRoleKey() {
         return this.role.getAuthority();
     }
-
+    //KakaoLogin
     public User kakaoUpdate(Long kakaoId, String profileImage) {
         this.kakaoId = kakaoId;
         this.profileImage = profileImage;

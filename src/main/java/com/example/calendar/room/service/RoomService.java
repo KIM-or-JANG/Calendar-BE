@@ -37,7 +37,7 @@ public class RoomService {
     //방 만들기
     @Transactional
     public ResponseEntity<Message> createRoom(CreateRoomRequestDto roomRequestDto, UserDetailsImpl userDetails) throws IOException {
-        String roomProfile = null;
+        String roomProfile = "https://kim-or-jang-calendar-profile.s3.ap-northeast-2.amazonaws.com/room.png";
         if(roomRequestDto.getRoomprofile() != null) {
             roomProfile = s3Uploader.upload(roomRequestDto.getRoomprofile());
         }

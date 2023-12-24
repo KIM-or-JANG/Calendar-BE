@@ -130,7 +130,8 @@ public class KakaoUserService {
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
-        String profileImage = kakaoUserInfo.getProfileImage();
+        String profileImage = "https://kim-or-jang-calendar-profile.s3.ap-northeast-2.amazonaws.com/user.png";
+        if (kakaoUserInfo.getProfileImage() != null) profileImage = kakaoUserInfo.getProfileImage();
         User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
         if (kakaoUser == null) {
             // 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인

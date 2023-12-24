@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,7 +43,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);    //카카오 로그인 오류 부분 42번째 라인
         } else {
             if (jwtUtil.validateToken(accessToken)) {
-                setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
+                try {
+                    setAuthentication(jwtUtil.getUserInfoFromToken(accessToken));
+                } catch (UsernameNotFoundException e) {
+                    throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                }
             } else if (refreshToken != null && jwtUtil.refreshTokenValid(refreshToken)) {
                 //Refresh 토큰으로 유저명 가져오기
                 String userEmail = jwtUtil.getUserInfoFromToken(refreshToken);
@@ -73,7 +78,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     }
 
     // 인증 객체를 생성하여 SecurityContext 에 설정
-    public void setAuthentication(String userEmail) {
+    public void setAuthentication(String userEmail) throws UsernameNotFoundException {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = jwtUtil.createAuthentication(userEmail);
         context.setAuthentication(authentication);
