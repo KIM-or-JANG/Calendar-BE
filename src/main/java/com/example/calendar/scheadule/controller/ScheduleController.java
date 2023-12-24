@@ -23,9 +23,9 @@ public class ScheduleController {
     //해당 달의 데이터
 //    @Secured("ROLE_ADMIN") //관리자용 API
     @GetMapping("/calendar")
-    public ResponseEntity<Message> getMonthDate(@RequestParam String month, String year,
+    public ResponseEntity<Message> getMyDate(@RequestParam String year, String month, String day,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
-        return scheduleService.getMonthData(month, year, userDetails);
+        return scheduleService.getMySchedule(month, year, day, userDetails);
     }
     //일정 작성
     @PostMapping("/schedule/create")
@@ -45,4 +45,5 @@ public class ScheduleController {
                                                   @AuthenticationPrincipal UserDetailsImpl userDetails){
         return scheduleService.deleteSchedule(scheduleId, roomId, locdate, userDetails.getUser());
     }
+
 }

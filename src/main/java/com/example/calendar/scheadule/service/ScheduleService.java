@@ -4,13 +4,11 @@ import com.example.calendar.common.exception.CustomException;
 import com.example.calendar.common.exception.ErrorCode;
 import com.example.calendar.room.entity.Room;
 import com.example.calendar.room.entity.RoomUser;
-import com.example.calendar.scheadule.dto.ScheduleRequestDto;
-import com.example.calendar.scheadule.dto.ScheduleResponseDto;
+import com.example.calendar.scheadule.dto.*;
 import com.example.calendar.scheadule.entity.Schedule;
 import com.example.calendar.room.repository.RoomRepository;
 import com.example.calendar.room.repository.RoomUserRepository;
 import com.example.calendar.scheadule.repository.ScheduleRepository;
-import com.example.calendar.scheadule.dto.CalendarResponseDto;
 import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
@@ -39,15 +37,31 @@ public class ScheduleService {
 
     //해달 달의 데이터
     @Transactional
-    public ResponseEntity<Message> getMonthData(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
-        List<RoomUser> roomUserList = roomUserRepository.findByuser_Id(userDetails.getUser().getId());
-        List<Schedule> schedules = new ArrayList<>();
-        for (int i = 0; i < roomUserList.size() ; i++) {
-            schedules = scheduleRepository.findByroom_Id(roomUserList.get(i).getRoom().getId());
+    public ResponseEntity<Message> getMySchedule(String month, String year,String day, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
+        String localdate = year + month;
+        List<RoomUser> roomUserList = roomUserRepository.findByuser_Id(userDetails.getUser().getId());  //사용자가 속해있는 룸 리스트
+        List<MyScheduleResponseDto> myscheduleResponseList = new ArrayList<>();
+        for (int i = 0; i < roomUserList.size(); i++) {
+            Long id = roomUserList.get(i).getRoom().getId();
+            List<Schedule> schedules = scheduleRepository.findAllByRoom_IdAndLocdate(id, localdate);
+
+            for (Schedule schedule : schedules) {
+                MyRoomResponseDto roomResponse = new MyRoomResponseDto(
+                        schedule.getRoom().getId(),
+                        schedule.getRoom().getRoomName(),
+                        schedule.getRoom().getRoomProfile()
+                );
+                MyScheduleResponseDto myscheduleResponseDto = new MyScheduleResponseDto(
+                        schedule.getSchedule(),
+                        schedule.getLocdate(),
+                        roomResponse
+                );
+
+                myscheduleResponseList.add(myscheduleResponseDto);
+            }
         }
-        //해당 유저가 포함된 그룹들의 켈린더에서 해당 달의 데이터를 모두 가져와야됨
-        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), schedules);
-        return new ResponseEntity<>(new Message(null,calendarResponseDto),HttpStatus.OK);
+        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), myscheduleResponseList);
+        return new ResponseEntity<>(new Message(null, calendarResponseDto), HttpStatus.OK);
     }
     //일정 작성
     public ResponseEntity<Message> createSchedlue(ScheduleRequestDto scheduleRequestDto, UserDetailsImpl userDetails) {

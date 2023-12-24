@@ -35,7 +35,7 @@ public class HoliyDaySercice {
     @Value("${api.secret.key}")
     private String API_SERVICE_KEY;
 
-    public Object holiydata(String month, String year) throws IOException, ParserConfigurationException, SAXException {
+    public List<HoliyDayRequestDto> holiydata(String month, String year) throws IOException, ParserConfigurationException, SAXException {
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + API_SERVICE_KEY); /*Service Key*/
@@ -75,7 +75,7 @@ public class HoliyDaySercice {
         Document document = builder.parse(new InputSource(new StringReader(xml)));
         NodeList itemList = document.getElementsByTagName("item");
 
-        List<HoliyDayRequestDto> anniversaryInfoList = new ArrayList<>();
+        List<HoliyDayRequestDto> holiydayList = new ArrayList<>();
 
         for (int i = 0; i < itemList.getLength(); i++) {
             Element item = (Element) itemList.item(i);
@@ -83,9 +83,9 @@ public class HoliyDaySercice {
             String locdate = item.getElementsByTagName("locdate").item(0).getTextContent();
 
             HoliyDayRequestDto info = new HoliyDayRequestDto(dateName, locdate);
-            anniversaryInfoList.add(info);
+            holiydayList.add(info);
         }
-            return anniversaryInfoList;
+            return holiydayList;
         }
     //공공데이터
     public ResponseEntity<Message> test(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {

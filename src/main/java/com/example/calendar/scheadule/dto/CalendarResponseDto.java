@@ -1,6 +1,6 @@
 package com.example.calendar.scheadule.dto;
 
-import com.example.calendar.scheadule.entity.Schedule;
+import com.example.calendar.hoilyDay.dto.HoliyDayRequestDto;
 import lombok.Getter;
 
 import java.util.List;
@@ -8,12 +8,10 @@ import java.util.List;
 @Getter
 public class CalendarResponseDto {
 
-    private Object holiday;
-    private List<Schedule> scheduleList;
+    private List<HoliyDayRequestDto> holiday;
+    private List<MyScheduleResponseDto> scheduleList;
 
-
-
-    public CalendarResponseDto(Object holiydata, List<Schedule> schedules) {
+    public CalendarResponseDto(List<HoliyDayRequestDto> holiydata, List<MyScheduleResponseDto> schedules) {
         this.holiday = holiydata;
         this.scheduleList = schedules;
     }
