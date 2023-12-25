@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -24,6 +25,7 @@ public class UserService {
     private final S3Uploader s3Uploader;
 
     //회원 정보 변경
+    @Transactional
     public ResponseEntity<Message> updateUser(Long userId, UserRequestDto userRequestDto, UserDetailsImpl userDetails) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)

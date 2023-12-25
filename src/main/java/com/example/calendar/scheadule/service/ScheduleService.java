@@ -63,7 +63,29 @@ public class ScheduleService {
         CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), myscheduleResponseList);
         return new ResponseEntity<>(new Message(null, calendarResponseDto), HttpStatus.OK);
     }
+    //방 캘린더
+    @Transactional
+    public ResponseEntity<Message> getRoomSchedule(Long roomId, String year, String month, User user) throws IOException, ParserConfigurationException, SAXException {
+        String localdate = year + month;
+        roomUserRepository.findByuser_IdAndRoom_Id(user.getId(), roomId).orElseThrow(
+                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
+        );
+        List<Schedule> scheduleList = scheduleRepository.findAllByRoom_IdAndLocdate(roomId, localdate);
+        List<MyScheduleResponseDto> myscheduleResponseList = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            MyScheduleResponseDto myscheduleResponseDto = new MyScheduleResponseDto(
+                    schedule.getSchedule(),
+                    schedule.getLocdate(),
+                    null
+            );
+
+            myscheduleResponseList.add(myscheduleResponseDto);
+        }
+        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), myscheduleResponseList);
+        return new ResponseEntity<>(new Message(null, calendarResponseDto), HttpStatus.OK);
+    }
     //일정 작성
+    @Transactional
     public ResponseEntity<Message> createSchedlue(ScheduleRequestDto scheduleRequestDto, UserDetailsImpl userDetails) {
         Room room = roomRepository.findByIdAndRoomName(scheduleRequestDto.getRoomId(), scheduleRequestDto.getRoomName()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
@@ -75,6 +97,7 @@ public class ScheduleService {
         return new ResponseEntity<>(new Message("일정 작성 성공", new ScheduleResponseDto(schedule.getId(), schedule.getRoom().getId(), schedule.getRoom().getRoomName(), schedule.getLocdate(), schedule.getSchedule())),HttpStatus.OK);
     }
     //일정 수정
+    @Transactional
     public ResponseEntity<Message> updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto, User user) {
         roomRepository.findById(scheduleRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
@@ -97,6 +120,7 @@ public class ScheduleService {
         }
     }
     //일정 삭제
+    @Transactional
     public ResponseEntity<Message> deleteSchedule(Long scheduleId,Long roomId, String locdate, User user) {
         roomRepository.findById(roomId).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
@@ -117,26 +141,7 @@ public class ScheduleService {
             throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
     }
-    //방 캘린더
-    public ResponseEntity<Message> getRoomSchedule(Long roomId, String year, String month, User user) throws IOException, ParserConfigurationException, SAXException {
-        String localdate = year + month;
-        roomUserRepository.findByuser_IdAndRoom_Id(user.getId(), roomId).orElseThrow(
-                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
-        );
-        List<Schedule> scheduleList = scheduleRepository.findAllByRoom_IdAndLocdate(roomId, localdate);
-        List<MyScheduleResponseDto> myscheduleResponseList = new ArrayList<>();
-        for (Schedule schedule : scheduleList) {
-            MyScheduleResponseDto myscheduleResponseDto = new MyScheduleResponseDto(
-                    schedule.getSchedule(),
-                    schedule.getLocdate(),
-                    null
-            );
 
-            myscheduleResponseList.add(myscheduleResponseDto);
-        }
-        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), myscheduleResponseList);
-        return new ResponseEntity<>(new Message(null, calendarResponseDto), HttpStatus.OK);
-    }
 }
 
 

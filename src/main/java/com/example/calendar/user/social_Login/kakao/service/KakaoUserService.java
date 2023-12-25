@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -42,6 +43,7 @@ public class KakaoUserService {
 //    kauth.kakao.com/oauth/authorize?client_id=58fc709768dcd1b5dc6a4f72874b6e2b&redirect_uri=https://kim-or-jang.shop/api/user/kakao/callback&response_type=code
 //    kauth.kakao.com/oauth/authorize?client_id=58fc709768dcd1b5dc6a4f72874b6e2b&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code
 //    https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Fkim-or-jang.shop%252Fapi%252Fuser%252Fkakao%252Fcallback%26through_account%3Dtrue%26client_id%3D58fc709768dcd1b5dc6a4f72874b6e2b#webTalkLogin
+    @Transactional
     public ResponseEntity<Message> kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);    //잘 안되면 try-catch로 오류 확인해보기

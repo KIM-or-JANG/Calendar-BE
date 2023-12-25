@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ public class CommentService {
         private final ScheduleRepository scheduleRepository;
         private final CommentRepository commentRepository;
     //댓글 작성
+    @Transactional
     public ResponseEntity<Message> createComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Room room = roomRepository.findById(commentRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
@@ -41,6 +43,7 @@ public class CommentService {
         return new ResponseEntity<>(new Message("댓글 작성 완료",commentResponseDto), HttpStatus.OK);
     }
     //댓글 수정
+    @Transactional
     public ResponseEntity<Message> updateComment(Long commentId, CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) {
         Room room = roomRepository.findById(commentRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
@@ -61,6 +64,7 @@ public class CommentService {
         return new ResponseEntity<>(new Message("댓글 수정 완료", commentResponseDto), HttpStatus.OK);
     }
     //댓글 삭제
+    @Transactional
     public ResponseEntity<Message> deleteComment(Long scheduleId, Long commentId, Long roomId, UserDetailsImpl userDetails) {
         Room room = roomRepository.findById(roomId).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)

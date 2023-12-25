@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,6 +36,7 @@ public class HoliyDaySercice {
     @Value("${api.secret.key}")
     private String API_SERVICE_KEY;
 
+    @Transactional
     public List<HoliyDayRequestDto> holiydata(String month, String year) throws IOException, ParserConfigurationException, SAXException {
 
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo"); /*URL*/
