@@ -32,6 +32,12 @@ public class ScheduleController {
     public ResponseEntity<Message> getRoomSchedule(@RequestParam Long roomId, String year, String month, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
         return scheduleService.getRoomSchedule(roomId, year, month, userDetails.getUser());
     }
+    //일정 보기
+    @GetMapping("/calendar/schedule")
+    public ResponseEntity<Message> getSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto,@RequestParam Long scheduleId,
+                                               @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return scheduleService.getSchedule(scheduleId, scheduleRequestDto, userDetails.getUser());
+    }
     //일정 작성
     @PostMapping("/schedule/create")
     public ResponseEntity<Message> createSchedlue(@RequestBody ScheduleRequestDto scheduleRequestDto,
@@ -46,9 +52,9 @@ public class ScheduleController {
     }
     //일정 삭제
     @DeleteMapping("/schedule/delete")
-    public ResponseEntity<Message> deleteSchedule(@RequestParam Long roomId, String locdate, Long scheduleId,
+    public ResponseEntity<Message> deleteSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto, @RequestParam Long scheduleId,
                                                   @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return scheduleService.deleteSchedule(scheduleId, roomId, locdate, userDetails.getUser());
+        return scheduleService.deleteSchedule(scheduleId, scheduleRequestDto.getRoomId(), scheduleRequestDto.getLocdate(), userDetails.getUser());
     }
 
 }

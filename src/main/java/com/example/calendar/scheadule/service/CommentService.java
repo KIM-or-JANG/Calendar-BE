@@ -39,7 +39,7 @@ public class CommentService {
                 () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         Comment comment = commentRepository.saveAndFlush(new Comment(userDetails.getUsername(), commentRequestDto.getComment(), userDetails.getUser(), schedule ));
-        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment(), comment.getUserName());
         return new ResponseEntity<>(new Message("댓글 작성 완료",commentResponseDto), HttpStatus.OK);
     }
     //댓글 수정
@@ -60,7 +60,7 @@ public class CommentService {
         } else{
           new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
-        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment(), comment.getUserName());
         return new ResponseEntity<>(new Message("댓글 수정 완료", commentResponseDto), HttpStatus.OK);
     }
     //댓글 삭제
@@ -80,7 +80,7 @@ public class CommentService {
         } else {
             new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
-        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment());
+        CommentResponseDto commentResponseDto = new CommentResponseDto(schedule.getLocdate(), schedule.getId(), schedule.getSchedule(), comment.getId(), comment.getComment(), comment.getUserName());
         return new ResponseEntity<>(new Message("댓글 삭제 완료",commentResponseDto),HttpStatus.OK);
     }
 }
