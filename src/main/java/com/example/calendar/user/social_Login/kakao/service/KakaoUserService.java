@@ -70,8 +70,8 @@ public class KakaoUserService {
         body.add("grant_type", "authorization_code");
         body.add("client_id", kakaoClientId);
         body.add("client_secret", kakaoClientSecret);
-//        body.add("redirect_uri", kakaoRedirectUri);
-        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
+        body.add("redirect_uri", kakaoRedirectUri);
+//        body.add("redirect_uri", "http://localhost:8080/api/user/kakao/callback");
         body.add("code", code);
         
 
