@@ -3,6 +3,7 @@ package com.example.calendar.user.service;
 import com.example.calendar.common.S3.S3Uploader;
 import com.example.calendar.common.exception.CustomException;
 import com.example.calendar.common.exception.ErrorCode;
+import com.example.calendar.common.security.jwt.JwtUtil;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.user.dto.UserRequestDto;
@@ -23,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final S3Uploader s3Uploader;
+    private final JwtUtil jwtUtil;
 
     //회원 정보 변경
     @Transactional
@@ -32,17 +34,17 @@ public class UserService {
         );
         if (user.getId() == userDetails.getUser().getId()) {
             if(userRequestDto.getNewProfileImage() == null) {
-                user.update(userRequestDto.getNickName(), userRequestDto.getEmail(), userRequestDto.getProfileImage());
+                user.update(userRequestDto.getNickName(), userRequestDto.getProfileImage());
                 userRepository.saveAndFlush(user);
             } else {
                 if(user.getProfileImage() == "https://kim-or-jang-calendar-profile.s3.ap-northeast-2.amazonaws.com/user.png"){
                     String profile = s3Uploader.upload(userRequestDto.getNewProfileImage());
-                    user.update(userRequestDto.getNickName(), userRequestDto.getEmail(), profile);
+                    user.update(userRequestDto.getNickName(), profile);
                     userRepository.saveAndFlush(user);
                 }else{
                     s3Uploader.delete(user.getProfileImage());
                     String profile = s3Uploader.upload(userRequestDto.getNewProfileImage());
-                    user.update(userRequestDto.getNickName(), userRequestDto.getEmail(), profile);
+                    user.update(userRequestDto.getNickName(), profile);
                     userRepository.saveAndFlush(user);
                 }
             }
