@@ -20,14 +20,14 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
-    //개인 메인 데이터
+    //개인 캘린더
 //    @Secured("ROLE_ADMIN") //관리자용 API
     @GetMapping("/calendar")
     public ResponseEntity<Message> getMyDate(@RequestParam String year, String month, String day,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
         return scheduleService.getMySchedule(month, year, day, userDetails);
     }
-    //해당 Room의 캘린더
+    //방 캘린더
     @GetMapping("/calendar/room")
     public ResponseEntity<Message> getRoomSchedule(@RequestParam Long roomId, String year, String month, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
         return scheduleService.getRoomSchedule(roomId, year, month, userDetails.getUser());

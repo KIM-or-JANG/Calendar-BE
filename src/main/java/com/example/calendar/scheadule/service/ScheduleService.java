@@ -35,7 +35,7 @@ public class ScheduleService {
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
 
-    //해달 달의 데이터
+    //개인 캘린더
     @Transactional
     public ResponseEntity<Message> getMySchedule(String month, String year,String day, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
         String localdate = year + month;
@@ -79,22 +79,22 @@ public class ScheduleService {
         roomRepository.findById(scheduleRequestDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.ROOM_NOT_FOUND)
         );
-       Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
-               () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
-       );
-       if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
-           schedule.UpdateData(scheduleRequestDto.getSchedule());
-           scheduleRepository.saveAndFlush(schedule);
-           return new ResponseEntity<>(new Message("일정 수정 성공", new ScheduleResponseDto(
-                   schedule.getId(),
-                   schedule.getRoom().getId(),
-                   schedule.getRoom().getRoomName(),
-                   schedule.getLocdate(),
-                   schedule.getSchedule())), HttpStatus.OK);
-       }
-       else {
-           throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
-       }
+        Schedule schedule =  scheduleRepository.findByIdAndRoom_IdAndUser_IdAndLocdate(scheduleId, scheduleRequestDto.getRoomId(), user.getId(), scheduleRequestDto.getLocdate()).orElseThrow(
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
+        );
+        if(schedule.getUser().getId() == user.getId() || schedule.getRoom().getManager().getId() == user.getId()) {
+            schedule.UpdateData(scheduleRequestDto.getSchedule());
+            scheduleRepository.saveAndFlush(schedule);
+            return new ResponseEntity<>(new Message("일정 수정 성공", new ScheduleResponseDto(
+                    schedule.getId(),
+                    schedule.getRoom().getId(),
+                    schedule.getRoom().getRoomName(),
+                    schedule.getLocdate(),
+                    schedule.getSchedule())), HttpStatus.OK);
+        }
+        else {
+            throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
+        }
     }
     //일정 삭제
     public ResponseEntity<Message> deleteSchedule(Long scheduleId,Long roomId, String locdate, User user) {
@@ -117,15 +117,26 @@ public class ScheduleService {
             throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
     }
-    //GetroomSchedule
+    //방 캘린더
     public ResponseEntity<Message> getRoomSchedule(Long roomId, String year, String month, User user) throws IOException, ParserConfigurationException, SAXException {
         String localdate = year + month;
         roomUserRepository.findByuser_IdAndRoom_Id(user.getId(), roomId).orElseThrow(
                 () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
         );
         List<Schedule> scheduleList = scheduleRepository.findAllByRoom_IdAndLocdate(roomId, localdate);
-        RoomScheduleResponseDto roomScheduleResponseDto = new RoomScheduleResponseDto(holiyDay.holiydata(month, year), scheduleList);
-        return new ResponseEntity<>(new Message(null, roomScheduleResponseDto), HttpStatus.OK);
+        List<MyScheduleResponseDto> myscheduleResponseList = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            MyScheduleResponseDto myscheduleResponseDto = new MyScheduleResponseDto(
+                    schedule.getSchedule(),
+                    schedule.getLocdate(),
+                    null
+            );
+
+            myscheduleResponseList.add(myscheduleResponseDto);
+        }
+        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), myscheduleResponseList);
+        return new ResponseEntity<>(new Message(null, calendarResponseDto), HttpStatus.OK);
     }
 }
+
 
