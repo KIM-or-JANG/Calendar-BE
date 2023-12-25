@@ -117,6 +117,15 @@ public class ScheduleService {
             throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
     }
-
+    //GetroomSchedule
+    public ResponseEntity<Message> getRoomSchedule(Long roomId, String year, String month, User user) throws IOException, ParserConfigurationException, SAXException {
+        String localdate = year + month;
+        roomUserRepository.findByuser_IdAndRoom_Id(user.getId(), roomId).orElseThrow(
+                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
+        );
+        List<Schedule> scheduleList = scheduleRepository.findAllByRoom_IdAndLocdate(roomId, localdate);
+        RoomScheduleResponseDto roomScheduleResponseDto = new RoomScheduleResponseDto(holiyDay.holiydata(month, year), scheduleList);
+        return new ResponseEntity<>(new Message(null, roomScheduleResponseDto), HttpStatus.OK);
+    }
 }
 
