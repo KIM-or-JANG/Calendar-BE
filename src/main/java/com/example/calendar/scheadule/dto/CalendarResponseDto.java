@@ -9,9 +9,9 @@ import java.util.List;
 public class CalendarResponseDto {
 
     private List<HoliyDayRequestDto> holiday;
-    private List<MyScheduleResponseDto> scheduleList;
+    private List<ScheduleListDto> scheduleList;
 
-    public CalendarResponseDto(List<HoliyDayRequestDto> holiydata, List<MyScheduleResponseDto> schedules) {
+    public CalendarResponseDto(List<HoliyDayRequestDto> holiydata, List<ScheduleListDto> schedules) {
         this.holiday = holiydata;
         this.scheduleList = schedules;
     }

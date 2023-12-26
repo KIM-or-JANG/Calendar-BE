@@ -1,5 +1,6 @@
 package com.example.calendar.common.queryDSL;
 
+import com.example.calendar.scheadule.dto.ScheduleListDto;
 import com.example.calendar.scheadule.entity.QSchedule;
 import com.example.calendar.scheadule.entity.Schedule;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,4 +28,17 @@ public class CustomScheduleRepositoryImpl implements CustomScheduleRepository{
                 )
                 .fetch();
     }
+
+//    @Override
+//    public List<ScheduleListDto> QueryDSL_findAllByRoom_IdAndLocdate(Long id, String yearMonth) {
+//        QSchedule schedule = QSchedule.schedule1;
+//
+//
+//        return query.selectFrom(schedule.schedule, schedule.locdate, schedule.room.roomName, schedule.room.roomProfile)
+//                .where(
+//                        schedule.room.Id.eq(id),
+//                        schedule.locdate.like(yearMonth + "%")
+//                )
+//                .fetch();
+//    }
 }
