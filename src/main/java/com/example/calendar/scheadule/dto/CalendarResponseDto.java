@@ -9,10 +9,12 @@ import java.util.List;
 public class CalendarResponseDto {
 
     private List<HoliyDayRequestDto> holiday;
+    private List<List<ScheduleListDto>> mainScheduleList;
     private List<ScheduleListDto> scheduleList;
 
-    public CalendarResponseDto(List<HoliyDayRequestDto> holiydata, List<ScheduleListDto> schedules) {
+    public CalendarResponseDto(List<HoliyDayRequestDto> holiydata, List<List<ScheduleListDto>> mainScheduleList, List<ScheduleListDto> scheduleList) {
         this.holiday = holiydata;
-        this.scheduleList = schedules;
+        this.mainScheduleList = mainScheduleList;
+        this.scheduleList = scheduleList;
     }
 }
