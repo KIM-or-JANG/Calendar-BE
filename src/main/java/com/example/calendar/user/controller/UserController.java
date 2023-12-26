@@ -25,4 +25,8 @@ public class UserController {
                                               @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return userService.updateUser(userId, userRequestDto, userDetails);
     }
+    @DeleteMapping("/user/delete")
+    public ResponseEntity<Message> deleteUser(@RequestParam Long userId, String email, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.deleteUser(userId, email, userDetails);
+    }
 }

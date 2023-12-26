@@ -54,4 +54,14 @@ public class UserService {
             throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
     }
+
+    public ResponseEntity<Message> deleteUser(Long userId, String email, UserDetailsImpl userDetails) {
+        User user = userRepository.findByIdAndEmail(userId, email).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
+        );
+        if(user.getId() == userDetails.getUser().getId() || user.getEmail() == userDetails.getUser().getEmail()){
+            userRepository.deleteByIdAndEmail(userId, email);
+        }
+        return new ResponseEntity<>(new Message("회원삭제 성공", user), HttpStatus.OK);
+    }
 }
