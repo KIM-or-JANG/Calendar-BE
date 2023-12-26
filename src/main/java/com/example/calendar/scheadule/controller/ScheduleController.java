@@ -23,9 +23,9 @@ public class ScheduleController {
     //개인 캘린더
 //    @Secured("ROLE_ADMIN") //관리자용 API
     @GetMapping("/calendar")
-    public ResponseEntity<Message> getMyDate(@RequestParam String year, String month, String day,
+    public ResponseEntity<Message> getMyDate(@RequestParam String year, String month,
                                                 @AuthenticationPrincipal UserDetailsImpl userDetails ) throws IOException, ParserConfigurationException, SAXException {
-        return scheduleService.getMySchedule(month, year, day, userDetails);
+        return scheduleService.getMySchedule(month, year, userDetails);
     }
     //방 캘린더
     @GetMapping("/calendar/room")
