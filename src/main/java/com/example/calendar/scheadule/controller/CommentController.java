@@ -26,7 +26,7 @@ public class CommentController {
     }
     //댓글 삭제
     @DeleteMapping("/comment/delete")
-    public ResponseEntity<Message> deleteComment(@RequestParam Long scheduleId, Long commentId, Long roomId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.deleteComment(scheduleId, commentId, roomId, userDetails);
+    public ResponseEntity<Message> deleteComment(@RequestParam Long commentId, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.deleteComment(commentRequestDto.getScheduleId(), commentId,commentRequestDto.getRoomId(), userDetails);
     }
 }
