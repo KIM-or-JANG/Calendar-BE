@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class UserService {
             throw new CustomException(ErrorCode.FORBIDDEN_MEMBER);
         }
     }
-
+    //회원 탈퇴
     public ResponseEntity<Message> deleteUser(Long userId, String email, UserDetailsImpl userDetails) {
         User user = userRepository.findByIdAndEmail(userId, email).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)
@@ -63,5 +64,10 @@ public class UserService {
             userRepository.deleteByIdAndEmail(userId, email);
         }
         return new ResponseEntity<>(new Message("회원삭제 성공", user), HttpStatus.OK);
+    }
+    //회원 찾기
+    public ResponseEntity<Message> getUser(String email, User user) {
+        List<UserResponseDto> userResponseDtoList = userRepository.findAllByEmail(email);
+        return new ResponseEntity<>(new Message(null,userResponseDtoList),HttpStatus.OK);
     }
 }

@@ -1,16 +1,15 @@
 package com.example.calendar.user.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserResponseDto {
     private String email;
-    private String profileImage;
     private String nickName;
-
-    public UserResponseDto(String email, String profileImage, String nickName) {
-        this.email = email;
-        this.profileImage = profileImage;
-        this.nickName = nickName;
-    }
+    private String profileImage;
 }

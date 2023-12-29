@@ -25,8 +25,14 @@ public class UserController {
                                               @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return userService.updateUser(userId, userRequestDto, userDetails);
     }
+    //회원 탈퇴
     @DeleteMapping("/user/delete")
     public ResponseEntity<Message> deleteUser(@RequestParam Long userId, String email, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.deleteUser(userId, email, userDetails);
+    }
+    //회원 찾기
+    @GetMapping("/user/get")
+    public  ResponseEntity<Message> getUser(@RequestParam String email, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.getUser(email, userDetails.getUser());
     }
 }

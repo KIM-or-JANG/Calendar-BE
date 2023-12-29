@@ -9,10 +9,11 @@ public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
-
     @Column
     private String friendName;
-
     @Column
-    private String friendBirthDay;
+    private String friendEmail;
+    @Column
+    private String friendProfileImage;
+
 }
