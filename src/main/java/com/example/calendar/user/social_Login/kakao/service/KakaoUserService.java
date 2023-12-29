@@ -112,7 +112,6 @@ public class KakaoUserService {
                 kakaoUserInfoRequest,
                 String.class
         );
-
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
