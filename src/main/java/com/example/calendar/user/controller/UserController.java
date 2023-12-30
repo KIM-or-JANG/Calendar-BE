@@ -2,6 +2,7 @@ package com.example.calendar.user.controller;
 
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
+import com.example.calendar.user.dto.FriendRequestDto;
 import com.example.calendar.user.dto.UserRequestDto;
 import com.example.calendar.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,22 @@ public class UserController {
     }
     //회원 찾기
     @GetMapping("/user/get")
-    public  ResponseEntity<Message> getUser(@RequestParam String email, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<Message> getUser(@RequestParam String email, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.getUser(email, userDetails.getUser());
+    }
+    //친구 추가
+    @PostMapping("user/friend/create")
+    public ResponseEntity<Message> createFriend(@RequestBody FriendRequestDto friendRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.createFriend(friendRequestDto, userDetails);
+    }
+    //친구 요청 수락
+    @PatchMapping("/user/friend/update")
+    public ResponseEntity<Message> updateFriend(@RequestBody FriendRequestDto friendRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.updateFriend(friendRequestDto, userDetails);
+    }
+    //친구 목록 조회
+    @GetMapping("/user/friend/get")
+    public ResponseEntity<Message> getFriend(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.getFriend(userDetails.getUser());
     }
 }

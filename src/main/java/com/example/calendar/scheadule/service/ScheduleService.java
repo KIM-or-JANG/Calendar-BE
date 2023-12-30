@@ -11,11 +11,10 @@ import com.example.calendar.room.repository.RoomRepository;
 import com.example.calendar.room.repository.RoomUserRepository;
 import com.example.calendar.scheadule.repository.CommentRepository;
 import com.example.calendar.scheadule.repository.ScheduleRepository;
-import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
+import com.example.calendar.hoilyDay.service.HoliyDayService;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.user.entity.User;
-import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private final HoliyDaySercice holiyDay;
+    private final HoliyDayService holiyDay;
     private final ScheduleRepository scheduleRepository;
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;

@@ -2,8 +2,7 @@ package com.example.calendar.hoilyDay.controller;
 
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
-import com.example.calendar.hoilyDay.sercice.HoliyDaySercice;
-import com.example.calendar.scheadule.service.ScheduleService;
+import com.example.calendar.hoilyDay.service.HoliyDayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class HoliDayController {
 
-    private final HoliyDaySercice holiyDaySercice;
+    private final HoliyDayService holiyDaySercice;
     @GetMapping("/test")
     public ResponseEntity<Message> test(
             @RequestParam("month") String month, @RequestParam("year") String year,

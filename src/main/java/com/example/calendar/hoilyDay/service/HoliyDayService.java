@@ -1,4 +1,4 @@
-package com.example.calendar.hoilyDay.sercice;
+package com.example.calendar.hoilyDay.service;
 
 
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
@@ -31,7 +31,7 @@ import java.util.List;
 
 @Component
 @PropertySource("classpath:application-key.properties")
-public class HoliyDaySercice {
+public class HoliyDayService {
 
     @Value("${api.secret.key}")
     private String API_SERVICE_KEY;

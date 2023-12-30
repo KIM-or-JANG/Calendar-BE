@@ -41,9 +41,6 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-    @OneToMany
-    @JoinColumn(name = "friend_id")
-    private List<Friend> friendList = new ArrayList<>();
 
     //소셜 회원가입
     public User(Long kakaoId, Long naverId, Long googleId, String email, String nickname, String password, String profileImage, UserRoleEnum role) {
