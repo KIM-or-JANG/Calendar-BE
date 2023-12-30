@@ -51,4 +51,9 @@ public class UserController {
     public ResponseEntity<Message> getFriend(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.getFriend(userDetails.getUser());
     }
+    //친구 삭제
+    @DeleteMapping("/user/friend/delete")
+    public ResponseEntity<Message> deleteFriend(@RequestBody FriendRequestDto friendRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.deleteUser(friendRequestDto, userDetails);
+    }
 }

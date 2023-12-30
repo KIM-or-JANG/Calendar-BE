@@ -147,4 +147,18 @@ public class UserService {
         }
         return new ResponseEntity<>(new Message("조회 성공", friendResponseDtoList), HttpStatus.OK);
     }
+    //친구 삭제
+    public ResponseEntity<Message> deleteUser(FriendRequestDto friendRequestDto, UserDetailsImpl userDetails) {
+        User toUser = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
+                () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
+        );
+        User fromUser = userRepository.findByEmailAndNickName(friendRequestDto.getEmail(),friendRequestDto.getNickName()).orElseThrow(
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
+        );
+        Friend friend = friendRepository.findByFromUserIDAndToUserID(toUser, fromUser).orElseThrow(
+                () -> new CustomException(ErrorCode.FRIEND_PERMISSON_NOT_FOUND)
+        );
+        friendRepository.delete(friend);
+        return new ResponseEntity<>(new Message("삭제 성공", null), HttpStatus.OK);
+    }
 }
