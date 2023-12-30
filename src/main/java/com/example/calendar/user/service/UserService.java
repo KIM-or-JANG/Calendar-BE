@@ -95,21 +95,25 @@ public class UserService {
         return new ResponseEntity<>(new Message("친구 요청 성공", friendResponseDto), HttpStatus.OK);
     }
     //친구요청 수락
-    public ResponseEntity<Message> updateFriend(FriendRequestDto friendRequestDto, UserDetailsImpl userDetails) {
+    public ResponseEntity<Message> updateFriend(boolean permisson, FriendRequestDto friendRequestDto, UserDetailsImpl userDetails) {
         User toUser = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
         );
         User fromUser = userRepository.findByEmailAndNickName(friendRequestDto.getEmail(),friendRequestDto.getNickName()).orElseThrow(
                 () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
-        Friend friend = friendRepository.findByFromUserIDAndToUserID(fromUser, toUser).orElseThrow(
+        Friend friend = friendRepository.findByFromUserIDAndToUserID(toUser, fromUser).orElseThrow(
                 () -> new CustomException(ErrorCode.FRIEND_PERMISSON_NOT_FOUND)
         );
-        boolean permisson = true;
-        friend.update(permisson);
-        friendRepository.saveAndFlush(friend);
-        FriendResponseDto friendResponseDto = new FriendResponseDto(fromUser, toUser);
-        return new ResponseEntity<>(new Message("친구 성공", friendResponseDto), HttpStatus.OK);
+        if(permisson) {
+            friend.update(permisson);
+            friendRepository.saveAndFlush(friend);
+            FriendResponseDto friendResponseDto = new FriendResponseDto(toUser, fromUser);
+            return new ResponseEntity<>(new Message("친구 수락", friendResponseDto), HttpStatus.OK);
+        } else {
+            friendRepository.delete(friend);
+            return new ResponseEntity<>(new Message("친구 거절", null), HttpStatus.OK);
+        }
     }
     //친구 목록 조회
     public ResponseEntity<Message> getFriend(User user) {

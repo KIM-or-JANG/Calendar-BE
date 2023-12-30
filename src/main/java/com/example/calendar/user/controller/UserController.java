@@ -43,8 +43,8 @@ public class UserController {
     }
     //친구 요청 수락
     @PatchMapping("/user/friend/update")
-    public ResponseEntity<Message> updateFriend(@RequestBody FriendRequestDto friendRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return userService.updateFriend(friendRequestDto, userDetails);
+    public ResponseEntity<Message> updateFriend(@RequestParam boolean permisson, @RequestBody FriendRequestDto friendRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return userService.updateFriend(permisson, friendRequestDto, userDetails);
     }
     //친구 목록 조회
     @GetMapping("/user/friend/get")
