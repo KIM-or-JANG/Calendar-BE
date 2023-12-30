@@ -4,6 +4,9 @@ package com.example.calendar.hoilyDay.service;
 import com.example.calendar.common.security.userDetails.UserDetailsImpl;
 import com.example.calendar.common.util.Message;
 import com.example.calendar.hoilyDay.dto.HoliyDayRequestDto;
+import com.example.calendar.hoilyDay.entity.Holiday;
+import com.example.calendar.hoilyDay.repository.HolidayRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
@@ -31,7 +34,9 @@ import java.util.List;
 
 @Component
 @PropertySource("classpath:application-key.properties")
+@RequiredArgsConstructor
 public class HoliyDayService {
+    private final HolidayRepository holidayRepository;
 
     @Value("${api.secret.key}")
     private String API_SERVICE_KEY;
@@ -87,8 +92,17 @@ public class HoliyDayService {
             HoliyDayRequestDto info = new HoliyDayRequestDto(dateName, locdate);
             holiydayList.add(info);
         }
+//        for(HoliyDayRequestDto holiyDayRequestDto : holiydayList){
+//            Holiday holiday = new Holiday(holiyDayRequestDto);
+//            holidayRepository.saveAndFlush(holiday);
+//        }
             return holiydayList;
-        }
+    }
+    @Transactional
+    public List<HoliyDayRequestDto> getHoliydata(String month, String year) {
+        List<HoliyDayRequestDto> holiyDayRequestDtoList = holidayRepository.findAllByYearAndMonth(year,month);
+        return holiyDayRequestDtoList;
+    }
     //공공데이터
     public ResponseEntity<Message> test(String month, String year, UserDetailsImpl userDetails) throws IOException, ParserConfigurationException, SAXException {
         return new ResponseEntity<>(new Message("공공데이터", holiydata(month, year)), HttpStatus.OK);

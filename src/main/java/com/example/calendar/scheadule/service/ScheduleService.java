@@ -48,7 +48,7 @@ public class ScheduleService {
             List<ScheduleListDto> scheduleList = scheduleRepository.QueryDSL_findAllByRoom_IdAndLocdate(roomUser.getRoom().getId(), localdate);
             mainScheduleList.add(scheduleList);
         }
-        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), mainScheduleList, null);
+        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.getHoliydata(month, year), mainScheduleList, null);
         return new ResponseEntity<>(new Message("개인 일정 목록", calendarResponseDto), HttpStatus.OK);
     }
     //방 캘린더
@@ -59,7 +59,7 @@ public class ScheduleService {
                 () -> new CustomException(ErrorCode.FORBIDDEN_MEMBER)
         );
         List<ScheduleListDto> scheduleList = scheduleRepository.QueryDSL_findAllByRoom_IdAndLocdate(roomId, localdate);
-        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.holiydata(month, year), null, scheduleList);
+        CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.getHoliydata(month, year), null, scheduleList);
         return new ResponseEntity<>(new Message("방 일정 목록", calendarResponseDto), HttpStatus.OK);
     }
     //일정 요청
