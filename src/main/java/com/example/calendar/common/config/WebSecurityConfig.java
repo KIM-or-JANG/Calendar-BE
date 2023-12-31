@@ -88,6 +88,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //                .requestMatchers("/").permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/kakao/callback")).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET,"api/user/naver/callback")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/user/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET,"/api/token/**")).permitAll()
                 .requestMatchers(antMatcher(HttpMethod.GET, "/kimandjang/test")).permitAll()

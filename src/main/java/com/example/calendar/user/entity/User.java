@@ -60,9 +60,11 @@ public class User {
         this.profileImage = profileImage;
         return this;
     }
-
-    public String getRoleKey() {
-        return this.role.getAuthority();
+    //NaverLogin
+    public User naverUpdate(Long naverId, String profileImage) {
+        this.naverId = naverId;
+        this.profileImage = profileImage;
+        return this;
     }
     //KakaoLogin
     public User kakaoUpdate(Long kakaoId, String profileImage) {
