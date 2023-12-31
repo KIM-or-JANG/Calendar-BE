@@ -49,7 +49,13 @@ public class ScheduleService {
             mainScheduleList.add(scheduleList);
         }
         CalendarResponseDto calendarResponseDto = new CalendarResponseDto(holiyDay.getHoliydata(month, year), mainScheduleList, null);
-        return new ResponseEntity<>(new Message("개인 일정 목록", calendarResponseDto), HttpStatus.OK);
+        List<RoomResponseDto> roomResponseDtoList = new ArrayList<>();
+        for (RoomUser roomUser : roomUserList){
+            RoomResponseDto roomResponseDto = new RoomResponseDto(roomUser.getRoom());
+            roomResponseDtoList.add(roomResponseDto);
+        }
+        MainResponseDto mainResponseDto = new MainResponseDto(calendarResponseDto, roomResponseDtoList);
+        return new ResponseEntity<>(new Message("개인 일정 목록", mainResponseDto), HttpStatus.OK);
     }
     //방 캘린더
     @Transactional

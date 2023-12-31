@@ -66,6 +66,7 @@ public class NaverUserService {
         body.add("client_id", naverClientId);
         body.add("client_secret", naverClientSecret);
         body.add("redirect_uri", naverRedirectUri);
+//      body.add("redirect_uri", "http://localhost:8080/api/user/naver/callback&state=state");
         body.add("code", code);
         body.add("state", state);
 
