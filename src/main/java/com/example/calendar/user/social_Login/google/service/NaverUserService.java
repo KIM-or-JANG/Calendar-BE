@@ -56,7 +56,7 @@ public class NaverUserService {
         return new ResponseEntity<>(new Message("네이버 로그인", naverUserInfoDto.getNickName()),HttpStatus.OK);
     }
     //  https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=N67sIS7i6jSW96HgtEcW&redirect_uri=http://localhost:8080/api/user/naver/callback&state=state
-
+    //  https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=N67sIS7i6jSW96HgtEcW&redirect_uri=https://kim-or-jang.shop/api/user/naver/callback&state=state
     private String getToken(String code, String state) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
