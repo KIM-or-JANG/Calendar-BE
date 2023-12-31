@@ -54,26 +54,39 @@ public class WebSecurityConfig implements WebMvcConfigurer {
 //
 //    }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("https://kim-or-jang.shop")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("Content-Type", "X-AUTH-TOKEN", "Authorization", "Authorization_Refresh", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
-                .allowCredentials(true)
-                .maxAge(3000);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("http://localhost:3000")
+//                .allowedOrigins("https://kim-or-jang.shop")
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+//                .allowedHeaders("Content-Type", "X-AUTH-TOKEN", "Authorization", "Authorization_Refresh", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+//                .allowCredentials(true)
+//                .maxAge(3000);
+//    }
 
     @Bean
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // 사전에 약속된 출처를 명시
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://kim-or-jang.shop"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // 본 요청에 허용할 HTTP method(예비 요청에 대한 응답 헤더에 추가됨)
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        // 본 요청에 허용할 HTTP header(예비 요청에 대한 응답 헤더에 추가됨)
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization_Refresh", "Cache-Control", "Content-Type"));
+        // 특정 헤더를 클라이언트 측에서 사용할 수 있게 지정
+        // 만약 지정하지 않는다면, Authorization 헤더 내의 토큰 값을 사용할 수 없음
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Authorization_Refresh"));
+        configuration.addExposedHeader(JwtUtil.ACCESS_TOKEN);
+        configuration.addExposedHeader(JwtUtil.REFRESH_TOKEN);
+        //  Preflight 요청의 캐시를 유지할 시간을 설정합니다. 여기서는 1800초(30분)로 설정되어 있습니다.
         configuration.setMaxAge(1800L);
+        // 기본적으로 브라우저에서 인증 관련 정보들을 요청 헤더에 담지 않음
+        // 이 설정을 통해서 브라우저에서 인증 관련 정보들을 요청 헤더에 담을 수 있도록 해줍니다.
         configuration.setAllowCredentials(true);
+        // allowCredentials 를 true로 하였을 때,
+        // allowedOrigin의 값이 * (즉, 모두 허용)이 설정될 수 없도록 검증합니다.
+        configuration.validateAllowCredentials();
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
