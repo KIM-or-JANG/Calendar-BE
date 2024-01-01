@@ -1,6 +1,8 @@
 package com.example.calendar.common.security.jwt;
 
 import com.example.calendar.common.security.SecurityExceptionDto;
+import com.example.calendar.common.security.jwt.refreshToken.RefreshToken;
+import com.example.calendar.common.security.jwt.refreshToken.RefreshTokenRepository;
 import com.example.calendar.user.entity.User;
 import com.example.calendar.user.entity.UserRoleEnum;
 import com.example.calendar.common.exception.CustomException;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -30,6 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -64,6 +68,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 log.info("===== Create New Refresh Token");
                 long refreshTime = jwtUtil.getExpirationTime(refreshToken);
                 String newRefreshToken = jwtUtil.createNewRefreshToken(user.getEmail(), refreshTime, user.getId(), UserRoleEnum.USER);
+                //-----
+                Optional<RefreshToken> getRefreshToken = refreshTokenRepository.findByEmail(user.getEmail());
+                refreshTokenRepository.save(getRefreshToken.get().updateToken(newRefreshToken));
+                //-----
                 jwtUtil.setHeaderRefreshToken(response, newRefreshToken);
             } else if (refreshToken == null) {
                 jwtExceptionHandler(response, "AccessToken 이 만료되었습니다.", HttpStatus.BAD_REQUEST.value());
