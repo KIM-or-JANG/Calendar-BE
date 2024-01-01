@@ -37,8 +37,8 @@ public class JwtUtil {
     public static final String ACCESS_TOKEN = "ACCESSTOKEN";
     public static final String REFRESH_TOKEN = "REFRESHTOKEN";
     public static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final long ACCESS_TIME = Duration.ofMinutes(60).toMillis();
-    private static final long REFRESH_TIME = Duration.ofDays(30).toMillis();
+    private static final long ACCESS_TIME = Duration.ofMinutes(60).toMillis();  //1시간
+    private static final long REFRESH_TIME = Duration.ofDays(1).toMillis();  //하루
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -55,7 +55,7 @@ public class JwtUtil {
 
     // header 토큰을 가져오기
     public String resolveToken(HttpServletRequest request, String token) {
-        String bearerToken = request.getHeader(ACCESS_TOKEN);
+        String bearerToken = request.getHeader(token);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
@@ -106,7 +106,7 @@ public class JwtUtil {
         } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token, 만료된 JWT token 입니다.11");
+            log.info("Expired JWT token, 만료된 JWT token 입니다.");
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e) {
@@ -128,7 +128,10 @@ public class JwtUtil {
 
     //RefreshToken 검증
     public boolean refreshTokenValid(String token) {
-        if (!validateToken(token)) return false;
+        if (!validateToken(token)){
+            return false;
+        }
+
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByEmail(getUserInfoFromToken(token));
 
         //해당유저의 리프레시 토큰이 DB에 없는 경우 예외처리
