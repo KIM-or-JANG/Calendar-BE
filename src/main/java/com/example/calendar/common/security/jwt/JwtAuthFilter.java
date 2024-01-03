@@ -64,13 +64,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 //Header 에 ACCESS TOKEN 추가
                 jwtUtil.setHeaderAccessToken(response, newAccessToken);
                 setAuthentication(userEmail);
+
                 // Refresh Token 재발급 로직, Header 에 REFRESHTOKEN 추가
                 log.info("===== Create New Refresh Token");
                 long refreshTime = jwtUtil.getExpirationTime(refreshToken);
                 String newRefreshToken = jwtUtil.createNewRefreshToken(user.getEmail(), refreshTime, user.getId(), UserRoleEnum.USER);
-                //-----
-                Optional<RefreshToken> getRefreshToken = refreshTokenRepository.findByEmail(user.getEmail());
-                refreshTokenRepository.save(getRefreshToken.get().updateToken(newRefreshToken));
+                //-----새로운 RefreshToken저장
+//                Optional<RefreshToken> getRefreshToken = refreshTokenRepository.findByEmail(user.getEmail());
+//                refreshTokenRepository.save(getRefreshToken.get().updateToken(newRefreshToken));
                 //-----
                 jwtUtil.setHeaderRefreshToken(response, newRefreshToken);
             } else if (refreshToken == null) {
